@@ -42,7 +42,6 @@ module.exports = function (options) {
             if (addType == "news" || addType == "article") {
                 db.run("INSERT INTO pages VALUES (?, ?, ?, ?, ?, ?, ?, ?)", null, title, subtitle, author, text, 0, status[addType], edition_id, function() {
                     insertedID = this.lastID;
-                    console.log(insertedID);
                     // insert uploaded images
                     for (var i = 0; i < uploadedImages.length; i++) {
                         console.log(uploadedImages[i]);
@@ -52,8 +51,10 @@ module.exports = function (options) {
                     //stmt.finalize();
                     //photoStmt.finalize();
                     if (addType == "article") {
-                        for (var i = 0; i < specifications.length; i++) {
-                            db.run("INSERT INTO article_specifications VALUES (?, ?, ?, ?, ?)", null, specifications[i].name, specifications[i].value, specifications[i].category_id, insertedID);
+                        if (!!specifications) {
+                            for (var i = 0; i < specifications.length; i++) {
+                                db.run("INSERT INTO article_specifications VALUES (?, ?, ?, ?, ?)", null, specifications[i].name, specifications[i].value, specifications[i].category_id, insertedID);
+                            }
                         }
                     }
                     // if type is article, continue insert specification
