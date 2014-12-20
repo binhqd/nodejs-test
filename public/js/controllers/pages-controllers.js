@@ -34,7 +34,7 @@ BackendCtrls
 
         if (confirm("Are you sure to delete this page?")) {
             $http(req).success(function(res) {                    
-                $scope.news.items.splice(index, 1);
+                $scope.pages.items.splice(index, 1);
                 alert("Page #"+newsId+" has been deleted");
             }).error(function(){
                 console.log('err');
