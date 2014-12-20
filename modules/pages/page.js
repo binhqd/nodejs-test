@@ -141,7 +141,12 @@ module.exports = function (options) {
                                     page.photos = photos;
 
                                     page.edition = edition;
-                                    page.specifications = specs;
+
+                                    if (!!specs)
+                                        page.specifications = specs;
+                                    else
+                                        page.specifications = [];
+                                    
                                     _this.res.json({
                                         page : page
                                     });
