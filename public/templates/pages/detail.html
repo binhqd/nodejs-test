@@ -29,33 +29,36 @@
       </div>
   </div>
   <div class='clearfix'></div>
-  <h3>Specifications:</h3>
-  <div  class="col-sm-9">
+  
+  <div ng-show="page.current.type == 1">
+    <h3>Specifications:</h3>
+    <div  class="col-sm-9">
 
-      <table class="table table-striped" ng-show="page.current.specifications.length > 0">
-        <thead>
-          <tr>
-            <th class="col-sm-1">#</th>
-            <th class="col-sm-4">Name</th>
-            <th class="col-sm-2">Value</th>
-            <th class="col-sm-2">Category</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="spec in page.current.specifications">
-            <td>{{ ($index + 1) }}</td>
+        <table class="table table-striped" ng-show="page.current.specifications.length > 0">
+          <thead>
+            <tr>
+              <th class="col-sm-1">#</th>
+              <th class="col-sm-4">Name</th>
+              <th class="col-sm-2">Value</th>
+              <th class="col-sm-2">Category</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="spec in page.current.specifications">
+              <td>{{ ($index + 1) }}</td>
 
-            <td><a href='/pages/#/detail/{{ item.id }}'>{{ spec.name }}</a></td>
-            <td>{{ spec.value }}</td>
-            <td>{{ spec.category.title }}</td>
-            <!-- <td>[ View | Edit | <a href='javascript:void(0)' ng-click="delete(item.id, $index)">Delete</a> ]</td> -->
-          </tr>
-          
-        </tbody>
-      </table>
-      <div ng-show="page.current.specifications.length == 0 && page.type == 1">
-        There are no specifications for this article
-      </div>
-      <div style="text-align: right"></div>
+              <td><a href='/pages/#/detail/{{ item.id }}'>{{ spec.name }}</a></td>
+              <td>{{ spec.value }}</td>
+              <td>{{ spec.category.title }}</td>
+              <!-- <td>[ View | Edit | <a href='javascript:void(0)' ng-click="delete(item.id, $index)">Delete</a> ]</td> -->
+            </tr>
+            
+          </tbody>
+        </table>
+        <div ng-show="page.current.specifications.length == 0 && page.type == 1">
+          There are no specifications for this article
+        </div>
+        <div style="text-align: right"></div>
+    </div>
   </div>
 </dl>
