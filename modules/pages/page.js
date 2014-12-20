@@ -136,16 +136,26 @@ module.exports = function (options) {
                     _this.getPhotos(pageID, function(err, photos) {
                         _this.getEdition(page.edition_id, function(err, edition) {
                             
+                            if (page.type == status['article']) {
+                                _this.getSpecifications(pageID, function(err, specs) {
+                                    page.photos = photos;
 
-                            _this.getSpecifications(pageID, function(err, specs) {
+                                    page.edition = edition;
+                                    page.specifications = specs;
+                                    _this.res.json({
+                                        page : page
+                                    });
+                                });
+                            } else {
                                 page.photos = photos;
 
                                 page.edition = edition;
-                                page.specifications = specs;
+                                //page.specifications = specs;
                                 _this.res.json({
                                     page : page
                                 });
-                            });
+                            }
+                            
                             
                         });
                     });
