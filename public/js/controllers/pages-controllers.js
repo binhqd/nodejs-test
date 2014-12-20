@@ -146,7 +146,8 @@ BackendCtrls
         $http(req).success(function(res) {                    
             //window.location = "/pages/#/news";
             //$scope.news = {};
-            console.log(res);
+            alert("Page has been saved successful");
+            window.location = "#/list";
         }).error(function(){
             console.log('err');
         }); 
@@ -242,7 +243,7 @@ BackendCtrls
 
     $http(req).success(function(res) {
         $scope.page = {};
-        
+
         $scope.page.current = res.page;
     }).error(function(){
         console.log('err');
