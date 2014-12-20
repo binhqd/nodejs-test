@@ -1,0 +1,43 @@
+<h3>Add Specification</h3>
+<div class="form-group">
+    <div class="dropdown">
+      <label for="dropType" class="col-sm-3 control-label">Category:</label>
+
+      <div>
+
+        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+          {{selectedCategory.item.title}}
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+          <li role="presentation" ng-repeat="item in category.items">
+            <a role="menuitem" tabindex="-1" href="javascript:void(0)" ng-click="selectCategory(item)">{{item.title}}</a>
+          </li>
+        </ul>
+
+        [ <a href='javascript:void(0)' ng-click="openAddCategory()">Add new Category</a> ]
+
+      </div>
+  </div>
+</div>
+<form novalidate class="form-horizontal" role="form" name="frmAddSpec" ng-submit="addSpec()">
+  <div class="form-group">
+        <label for="txtAuthor" class="col-sm-3 control-label">Name</label>
+        <div class="col-sm-7">
+          <input type="text" class="form-control" ng-model="specification.name" id="txtAuthor" placeholder="Name">
+        </div>
+    </div>
+    <div class="form-group">
+      <label for="txtAuthor" class="col-sm-3 control-label">Value</label>
+      <div class="col-sm-7">
+        <input type="text" ng-model="specification.value" class="form-control" id="txtAuthor" placeholder="Value">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-default btn-primary">Add</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+      </div>
+    </div>
+</form>

@@ -1,0 +1,24 @@
+<h3>CREATE EDITION</h3>
+<form novalidate class="form-horizontal" role="form" name="userForm" ng-submit="saveEdition(userForm.$valid)">
+  <div class="form-group">
+    <label for="txtName" class="col-sm-2 control-label">Name</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" name="name" ng-model="form.name" id="txtName" placeholder="Name" required>
+      <p ng-show="userForm.name.$invalid && !userForm.name.$pristine" class="help-block">Name is required.</p>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="txtEdition" class="col-sm-2 control-label">Edition</label>
+    <div class="col-sm-4">
+      <input type="text" ng-pattern="/[\d]+/" name='edition' class="form-control" ng-model="form.edition" id="txtEdition" placeholder="Edition" required>
+      <p ng-show="userForm.edition.$invalid && !userForm.edition.$pristine" class="help-block">Edition must be an integer.</p>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-default btn-primary">Save</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+    </div>
+  </div>
+</form>

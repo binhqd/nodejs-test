@@ -1,0 +1,95 @@
+<h3>CREATE PAGES</h3>
+
+<div>
+<form action="/createRevista"  method="post" name="files" enctype="multipart/form-data" class="form-horizontal">
+  <fieldset>
+    <legend>Page: News</legend>
+    
+    <label>Title</label>
+    <input type="text" id="title" name="title" class="input-xxlarge" placeholder="Title" size="100">
+    
+    <label>Subtitle</label>
+    <input type="text" id="subtitle" name="subtitle" class="input-xxlarge" placeholder="Subtitle" size="100" value="">
+	
+	<label>Author</label>
+    <input type="text" id="author" name="author" class="input-xxlarge" placeholder="Author" size="100" value="">
+
+    <label>Text</label>
+    <textarea id="text" name="text" class="input-xxlarge" placeholder="Text" cols="70" rows="6"></textarea>
+    <br/>
+    <p>
+    <button type="submit" class="btn btn-primary">Save</button>
+	</p>
+  </fieldset>
+</form>
+
+
+</div>
+<!-- JQUERY -->
+ <!-- Placed at the end of the document so the pages load faster -->
+    <!-- JQUERY -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="/js/jquery-1.7.1.min.js"><\/script>')</script>
+    <script src="/assets/js/bootstrap-transition.js"></script>
+    <script src="/assets/js/bootstrap-alert.js"></script>
+    <script src="/assets/js/bootstrap-modal.js"></script>
+    <script src="/assets/js/bootstrap-dropdown.js"></script>
+    <script src="/assets/js/bootstrap-scrollspy.js"></script>
+    <script src="/assets/js/bootstrap-tab.js"></script>
+    <script src="/assets/js/bootstrap-tooltip.js"></script>
+    <script src="/assets/js/bootstrap-popover.js"></script>
+    <script src="/assets/js/bootstrap-button.js"></script>
+    <script src="/assets/js/bootstrap-collapse.js"></script>
+    <script src="/assets/js/bootstrap-carousel.js"></script>
+    <script src="/assets/js/bootstrap-typeahead.js"></script>
+	<script type="text/javascript" src="/js/scripts.js"></script>
+    <script type="text/javascript" src="/js/jquery.form.js"></script>
+    <script type="text/javascript" src="/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.maskedinput.min.js"></script>
+        
+
+<script>
+	jQuery(function($){
+	      $('form').validate({
+	        rules:{
+	            titulo:{required: true},
+	            descricao:{required: true},
+	            circulacao:{required: true},
+	            capa:{required: true},
+	            zip:{required: true}
+	        },
+	
+	        messages:{
+	            titulo:{required: "Preencha o campo Usuário"},
+	            descricao:{required: "Preencha o campo Descrição"},
+	            circulacao:{required: "Preencha o campo Circulação"},
+	            capa:{required: "Preencha o campo Capa Revista"},
+	            zip:{required: "Preencha o campo ZIP"}
+	        }
+        }); 	
+	      
+	      $("#revista").change(function(){
+	      	if($(this).val() == "OUTROS")
+	      	{
+	      		$("#zip").rules("remove");
+	      		$( "#link" ).rules( "add", {
+				  required: true,
+				  messages: {
+				    required: "O campo link é obrigatório"
+				  }
+				});
+	      	}
+	      	else
+	      	{
+	      		$("#link").rules("remove");
+	      		$( "#zip" ).rules( "add", {
+				  required: true,
+				  messages: {
+				    required: "O campo ZIP é obrigatório"
+				  }
+				});
+	      	}
+	      });   	
+	});
+
+</script>

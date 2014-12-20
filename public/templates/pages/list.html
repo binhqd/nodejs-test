@@ -1,0 +1,29 @@
+<h3>Pages</h3>
+
+<div  class="col-sm-9">
+  [ <a href='/pages/#/add'>Add new Page</a> ]
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="col-sm-1">#</th>
+          <th class="col-sm-4">Pages</th>
+          <th class="col-sm-2">Name</th>
+          <th class="col-sm-2">Edition</th>
+          <th class="col-sm-3">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in pages.items">
+          <td>{{ item.id }}</td>
+
+          <td><a href='/pages/#/detail/{{ item.id }}'>{{ item.title }}</a><br/>
+              <i>{{ item.subtitle }}</i>
+          </td>
+          <td>{{ item.edition.name }}</td>
+          <td>{{ item.edition.edition }}</td>
+          <td>[ <a href='/pages/#/detail/{{ item.id }}'>View</a> | Edit | <a href='javascript:void(0)' ng-click="delete(item.id, $index)">Delete</a> ]</td>
+        </tr>
+        
+      </tbody>
+    </table>
+</div>

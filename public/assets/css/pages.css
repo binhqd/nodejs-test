@@ -1,0 +1,14 @@
+
+.color-swatches .gray-lighter {
+	background-color: #eee;
+	min-height: 100px;
+}
+.color-swatch {
+	min-height: 100px;
+	box-sizing: border-box;
+	margin: 0 5px;
+	border-radius: 3px;
+	clear:both;
+	margin:20px;
+	padding: 20px;
+}
