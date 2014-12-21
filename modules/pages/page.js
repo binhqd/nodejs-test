@@ -108,18 +108,22 @@ module.exports = function (options) {
 
         PageModel.prototype.getSpecifications = function(pageID, callback) {
             db.all("SELECT id,name,value,category_id FROM article_specifications where page_id = ?", pageID , function(err, specs){
-                var totalSpecs = specs.length;
-                for (var i = 0; i < totalSpecs; i++) {
-                    var cnt = 0;
-                    var categoryID = specs[i].category_id;
-                    db.get("SELECT id, title FROM page_categories where id = ?", categoryID, function(err, cat) {
-                        specs[cnt].category = cat;
+                if (!!specs && specs.length > 0) {
+                    var totalSpecs = specs.length;
+                    for (var i = 0; i < totalSpecs; i++) {
+                        var cnt = 0;
+                        var categoryID = specs[i].category_id;
+                        db.get("SELECT id, title FROM page_categories where id = ?", categoryID, function(err, cat) {
+                            specs[cnt].category = cat;
 
-                        if (cnt == totalSpecs - 1) {
-                            callback(err, specs);
-                        }
-                        cnt++;
-                    });
+                            if (cnt == totalSpecs - 1) {
+                                callback(err, specs);
+                            }
+                            cnt++;
+                        });
+                    }
+                } else {
+                    callback(err, []);
                 }
                 //page.photos = photos;
                 
@@ -131,39 +135,51 @@ module.exports = function (options) {
             var pageID = this.req.params.id;
 
             db.get("SELECT id,title,subtitle,text,status,type,edition_id FROM pages where id = ?", pageID , function(err, page){
-                if (typeof page != "undefined") {
-                    page.photos = [];
-                    _this.getPhotos(pageID, function(err, photos) {
-                        _this.getEdition(page.edition_id, function(err, edition) {
-                            
-                            if (page.type == status['article']) {
-                                _this.getSpecifications(pageID, function(err, specs) {
+                if (!!page) {
+                    if (page.type == status['image']) {
+                        page.photos = [
+                            {
+                                id: null,
+                                image: page.title
+                            }
+                        ];
+
+                        _this.res.json({
+                            page : page
+                        });
+                    } else {
+                        page.photos = [];
+                        _this.getPhotos(pageID, function(err, photos) {
+                            _this.getEdition(page.edition_id, function(err, edition) {
+                                
+                                if (page.type == status['article']) {
+
+                                    _this.getSpecifications(pageID, function(err, specs) {
+                                        page.photos = photos;
+
+                                        page.edition = edition;
+
+                                        if (!!specs)
+                                            page.specifications = specs;
+                                        else
+                                            page.specifications = [];
+
+                                        _this.res.json({
+                                            page : page
+                                        });
+                                    });
+                                } else {
                                     page.photos = photos;
 
                                     page.edition = edition;
-
-                                    if (!!specs)
-                                        page.specifications = specs;
-                                    else
-                                        page.specifications = [];
-                                    
+                                    page.specifications = [];
                                     _this.res.json({
                                         page : page
                                     });
-                                });
-                            } else {
-                                page.photos = photos;
-
-                                page.edition = edition;
-                                //page.specifications = specs;
-                                _this.res.json({
-                                    page : page
-                                });
-                            }
-                            
-                            
+                                }
+                            });
                         });
-                    });
+                    }  
                 } else {
                     _this.res.json({
                         page : page
@@ -180,48 +196,58 @@ module.exports = function (options) {
                 var cnt = 0;
                 var pageLength = pages.length;
 
-                if (typeof pages != "undefined") {
+                if (!!pages) {
                     for (var i = 0; i < pageLength; i++) {
-                        if (pages[i].type == status['image']) break;
-
                         pages[i].photos = [];
                         var pageId = pages[i].id;
 
-                        _this.getPhotos(pageId, function(err, photos) {
-                            var editionID = pages[cnt].edition_id;
-                            _this.getEdition(editionID, function(err, edition) {
-
-                                // _this.getSpecifications(pageId, function(err, specs) {
-                                //     pages[cnt].photos = photos;
-
-                                //     pages[cnt].edition = edition;
-
-                                //     pages[cnt].specifications = specs;
-
-                                //     if (cnt == pageLength - 1) {
-                                //         _this.res.json({
-                                //             data : {
-                                //                 items : pages
-                                //             }
-                                //         });
-                                //     }
-                                //     cnt++;
-                                // });
-
-                                pages[cnt].photos = photos;
-
-                                pages[cnt].edition = edition;
-
-                                if (cnt == pageLength - 1) {
-                                    _this.res.json({
-                                        data : {
-                                            items : pages
-                                        }
-                                    });
+                        if (pages[i].type == status['image']) {
+                            pages[i].photos = [
+                                {
+                                    id: null,
+                                    image: pages[i].title
                                 }
-                                cnt++;
+                            ];
+                            cnt++;
+                            continue;
+                        } else {
+
+                            _this.getPhotos(pageId, function(err, photos) {
+                                var editionID = pages[cnt].edition_id;
+                                _this.getEdition(editionID, function(err, edition) {
+
+                                    // _this.getSpecifications(pageId, function(err, specs) {
+                                    //     pages[cnt].photos = photos;
+
+                                    //     pages[cnt].edition = edition;
+
+                                    //     pages[cnt].specifications = specs;
+
+                                    //     if (cnt == pageLength - 1) {
+                                    //         _this.res.json({
+                                    //             data : {
+                                    //                 items : pages
+                                    //             }
+                                    //         });
+                                    //     }
+                                    //     cnt++;
+                                    // });
+
+                                    pages[cnt].photos = photos;
+
+                                    pages[cnt].edition = edition;
+
+                                    if (cnt == pageLength - 1) {
+                                        _this.res.json({
+                                            data : {
+                                                items : pages
+                                            }
+                                        });
+                                    }
+                                    cnt++;
+                                });
                             });
-                        });
+                        }
                     }
                 } else {
                     _this.res.json({

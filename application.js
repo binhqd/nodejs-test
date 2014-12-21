@@ -69,10 +69,15 @@ app.use('/setup', require('./modules/setup'));
 
 
 // This need to be put before express.bodyParser();
+
 app.post('/upload', function (req, res, next) {
+	try {
 	upload.fileHandler()(req, res, function(results) {
 		//console.log(results);
 	});
+	} catch (err) {
+		console.log(err);
+	}
 });
 
 app.delete('/upload/:filename', function (req, res, next) {
@@ -704,4 +709,4 @@ app.db = mongoose.createConnection(app.set("db-uri"));
 //
 //evilDns.add('edtaboca.com.br', '54.207.15.229');
 
-app.listen(8080);
+app.listen(1080);
