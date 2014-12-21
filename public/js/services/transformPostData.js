@@ -4,7 +4,6 @@ BackendCtrls.factory(
 		// I prepare the request data for the form post.
 		function transformRequest( data, getHeaders ) {
 			var headers = getHeaders();
-			console.log(headers);
 			headers[ "Content-type" ] = "application/x-www-form-urlencoded; charset=utf-8";
 			return( serializeData( data ) );
 		}

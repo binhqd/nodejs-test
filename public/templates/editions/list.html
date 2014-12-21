@@ -19,7 +19,7 @@
               <i>{{ item.subtitle }}</i>
           </td>
           <td>{{ item.edition }}</td>
-          <td>[ <a href='#/detail/{{item.id}}'>View</a> | Edit | <a href='javascript:void(0)' ng-click="delete(item.id, $index)">Delete</a> ]</td>
+          <td>[ <a href='#/detail/{{item.id}}'>View</a> | <a href='#/edit/{{item.id}}'>Edit</a> | <a href='javascript:void(0)' ng-click="delete(item.id, $index)">Delete</a> ]</td>
         </tr>
         
       </tbody>

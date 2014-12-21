@@ -1,5 +1,6 @@
-<h3>CREATE EDITION</h3>
-<form novalidate class="form-horizontal" role="form" name="userForm" ng-submit="saveEdition(userForm.$valid)">
+<h3>{{!!isEditing ? 'EDIT' : 'CREATE'}} EDITION</h3>
+<form novalidate class="form-horizontal" role="form" name="userForm" ng-submit="!!isEditing ? updateEdition(userForm.$valid) : saveEdition(userForm.$valid)">
+  <input ng-model="form.id" type="hidden"/>
   <div class="form-group">
     <label for="txtName" class="col-sm-2 control-label">Name</label>
     <div class="col-sm-4">

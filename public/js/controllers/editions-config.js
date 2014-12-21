@@ -32,4 +32,13 @@ pages.config(function($routeProvider, $stateProvider) {
 			}
 		}
 	})
+	.state('editedition', {
+		url: '/edit/:id',
+		views: {
+			'tabContent': {
+				templateUrl: '/templates/editions/form.html',
+				controller: 'EditEditionsCtrl'
+			}
+		}
+	})
 });

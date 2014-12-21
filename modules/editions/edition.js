@@ -26,6 +26,37 @@ module.exports = function (options) {
 
         };
 
+        Edition.prototype.put = function () {
+            var name = this.req.body.name;
+            var edition = this.req.body.edition;
+            var id = this.req.body.id;
+
+            var _this = this;
+            db.run("UPDATE editions set name=?, edition=? where id = ?", name, edition, id, function(err) {
+                if (!err) {
+                    _this.res.json({
+                        meta : {
+                            code : 200,
+                            message : "Edition has been updated successful"
+                        }
+                    });
+                } else {
+                    _this.res.json({
+                        meta : {
+                            code : 500,
+                            message : "Can't update edition. Please contact administrator"
+                        }
+                    });
+                }
+            });
+            // stmt.run(null, name, edition);
+            // stmt.finalize();
+            // this.db.close();
+            // res.json(200, this.req.body);
+            //res.end();
+
+        };
+
         Edition.prototype.search = function () {
             var _this = this;
             db.all("SELECT id,name,edition FROM editions order by id", function(err, rows){
@@ -77,6 +108,9 @@ module.exports = function (options) {
             case 'POST':
                 edition.post();
 
+                break;
+            case 'PUT':
+                edition.put();
                 break;
             case 'DELETE':
                 edition.delete();

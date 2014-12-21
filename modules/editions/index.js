@@ -19,6 +19,10 @@ module.exports = function(){
 		edition()(req, res, next, '/detail');
 	});
 
+	app.put('/:id', function(req, res, next) {
+		edition()(req, res, next);
+	});
+
 	app.post('/', function(req, res, next) {
 		edition()(req, res, next);
 	});

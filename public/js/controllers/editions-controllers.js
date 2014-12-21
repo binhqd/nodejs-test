@@ -26,6 +26,8 @@ BackendCtrls
         }
     }
 
+
+
     $scope.test = function(isValid) {
         console.log(isValid);
     }
@@ -92,5 +94,47 @@ BackendCtrls
     }).error(function(){
         console.log('err');
     });
+})
+.controller('EditEditionsCtrl', function ($scope,$http, $stateParams, transformRequestAsFormPost, $state) {
+    $scope.isEditing = true;
+    $scope.form = {};
+
+    // get edition info
+    var req = {
+        method: 'GET',
+        url: '/editions/detail/' + $stateParams.id
+    }
+
+    $http(req).success(function(res) {
+        // TODO: Check if res.meta.code == 200
+        $scope.form = res.editions;
+    }).error(function(){
+        console.log('err');
+    });
+
+    $scope.updateEdition = function(isValid) {
+        if (isValid) {
+            var req = {
+                method: 'PUT',
+                url: '/editions/' + $scope.form.id,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+                },
+                transformRequest: transformRequestAsFormPost,
+                data: $scope.form
+            }
+
+            $http(req).success(function(res) {
+                alert(res.meta.message);
+                if (res.meta.code == 200) {
+                    $state.go('listeditions');
+                }
+            }).error(function(){
+                console.log('err');
+            });
+        } else {
+            alert("Validation failed! Please check your form inputs");
+        }
+    }
 })
 ;
