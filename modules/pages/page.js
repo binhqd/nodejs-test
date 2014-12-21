@@ -92,22 +92,22 @@ module.exports = function (options) {
             res.json(200, {code: 200, message: "OK"});
         }
 
-        PageModel.prototype.getPhotos = function(pageID, callback) {
+        PageModel.prototype.getPhotos = function(page, callback) {
             // get images
-            db.all("SELECT id,image,page_id FROM pages_photos where page_id = ?", pageID , function(err, photos){
+            db.all("SELECT id,image,page_id FROM pages_photos where page_id = ?", page.id , function(err, photos){
                 //page.photos = photos;
-                callback(err,photos);
+                callback(page, err, photos);
             });
         }
-        PageModel.prototype.getEdition = function(editionID, callback) {
-            db.get("SELECT id,name,edition FROM editions where id = ?", editionID , function(err, edition){
+        PageModel.prototype.getEdition = function(page, callback) {
+            db.get("SELECT id,name,edition FROM editions where id = ?", page.edition_id , function(err, edition){
                 //page.photos = photos;
-                callback(err, edition);
+                callback(page, err, edition);
             });
         }
 
-        PageModel.prototype.getSpecifications = function(pageID, callback) {
-            db.all("SELECT id,name,value,category_id FROM article_specifications where page_id = ?", pageID , function(err, specs){
+        PageModel.prototype.getSpecifications = function(page, callback) {
+            db.all("SELECT id,name,value,category_id FROM article_specifications where page_id = ?", page.id , function(err, specs){
                 if (!!specs && specs.length > 0) {
                     var totalSpecs = specs.length;
                     for (var i = 0; i < totalSpecs; i++) {
@@ -117,16 +117,14 @@ module.exports = function (options) {
                             specs[cnt].category = cat;
 
                             if (cnt == totalSpecs - 1) {
-                                callback(err, specs);
+                                callback(page, err, specs);
                             }
                             cnt++;
                         });
                     }
                 } else {
-                    callback(err, []);
+                    callback(page, err, []);
                 }
-                //page.photos = photos;
-                
             });
         }
 
@@ -149,20 +147,16 @@ module.exports = function (options) {
                         });
                     } else {
                         page.photos = [];
-                        _this.getPhotos(pageID, function(err, photos) {
-                            _this.getEdition(page.edition_id, function(err, edition) {
+                        _this.getPhotos(page, function(page, err, photos) {
+                            _this.getEdition(page, function(page, err, edition) {
                                 
                                 if (page.type == status['article']) {
+                                    _this.getSpecifications(page, function(page, err, specs) {
+                                        page.photos = !!photos ? photos : [];
 
-                                    _this.getSpecifications(pageID, function(err, specs) {
-                                        page.photos = photos;
+                                        page.edition = !!edition ? edition : null;
 
-                                        page.edition = edition;
-
-                                        if (!!specs)
-                                            page.specifications = specs;
-                                        else
-                                            page.specifications = [];
+                                        page.specifications = !!specs ? specs : [];
 
                                         _this.res.json({
                                             page : page
@@ -193,14 +187,14 @@ module.exports = function (options) {
             var pages = [];
 
             db.all("SELECT id,title,subtitle,text,status,type,edition_id FROM pages order by id desc", function(err, pages){
-                var cnt = 0;
                 var pageLength = pages.length;
+                var cnt = 0;
 
                 if (!!pages) {
                     for (var i = 0; i < pageLength; i++) {
                         pages[i].photos = [];
+                        var page = pages[i];
                         var pageId = pages[i].id;
-
                         if (pages[i].type == status['image']) {
                             pages[i].photos = [
                                 {
@@ -208,34 +202,18 @@ module.exports = function (options) {
                                     image: pages[i].title
                                 }
                             ];
+
+                            console.log(pages[i].title + ' is an image');
                             cnt++;
                             continue;
                         } else {
+                            _this.getPhotos(page, function(page, err, photos) {
+                                var editionID = page.edition_id;
+                                
+                                _this.getEdition(page, function(page, err, edition) {
+                                    page.photos = !!photos ? photos : [];
 
-                            _this.getPhotos(pageId, function(err, photos) {
-                                var editionID = pages[cnt].edition_id;
-                                _this.getEdition(editionID, function(err, edition) {
-
-                                    // _this.getSpecifications(pageId, function(err, specs) {
-                                    //     pages[cnt].photos = photos;
-
-                                    //     pages[cnt].edition = edition;
-
-                                    //     pages[cnt].specifications = specs;
-
-                                    //     if (cnt == pageLength - 1) {
-                                    //         _this.res.json({
-                                    //             data : {
-                                    //                 items : pages
-                                    //             }
-                                    //         });
-                                    //     }
-                                    //     cnt++;
-                                    // });
-
-                                    pages[cnt].photos = photos;
-
-                                    pages[cnt].edition = edition;
+                                    page.edition = !!edition ? edition : null;
 
                                     if (cnt == pageLength - 1) {
                                         _this.res.json({

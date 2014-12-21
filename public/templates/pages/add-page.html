@@ -82,7 +82,7 @@
 {% } %}
 </script>
 
-<h3>CREATE PAGES {{uploadedImages.items.length}}</h3>
+<h3>CREATE PAGES</h3>
 
 <div class="container" ng-controller="UploadImagesCtrl" ng-hide="true">
     <!-- The file upload form used as target for the file upload widget -->
@@ -106,7 +106,7 @@
 
 
 
-<form class="form-horizontal" role="form" ng-submit="savePage()">
+<form novalidate class="form-horizontal" role="form" name='frmPage' ng-submit="savePage(frmPage.$valid)">
     <input type='hidden' name="addType" ng-value="addType"/>
 
     <div class="form-group">
@@ -120,9 +120,9 @@
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0)" ng-click="selectType('image')">Image</a></li>
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0)" ng-click="selectType('article')">Article</a></li>
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0)" ng-click="selectType('news')">News</a></li>
+            <li role="presentation" ng-class="{'selected' : addType == 'image'}"><a role="menuitem" tabindex="-1" href="javascript:void(0)" ng-click="selectType('image')">Image</a></li>
+            <li role="presentation" ng-class="{'selected' : addType == 'article'}"><a role="menuitem" tabindex="-1" href="javascript:void(0)" ng-click="selectType('article')">Article</a></li>
+            <li role="presentation" ng-class="{'selected' : addType == 'news'}"><a role="menuitem" tabindex="-1" href="javascript:void(0)" ng-click="selectType('news')">News</a></li>
           </ul>
         </div>
     </div>
@@ -147,7 +147,7 @@
           <div class="form-group">
             <label for="txtTitle" class="col-sm-2 control-label">Title</label>
             <div class="col-sm-4">
-              <input type="text" class="form-control" ng-model="page.title" id="txtTitle" placeholder="Title">
+              <input type="text" class="form-control" ng-model="page.title" id="txtTitle" placeholder="Title" required>
             </div>
           </div>
           <div class="form-group">
@@ -164,8 +164,9 @@
           </div>
           <div class="form-group">
             <label for="txtText" class="col-sm-2 control-label">Text</label>
-            <div class="col-sm-4">
-              <textarea id="text" name="text" ng-model="page.text" class="form-control" placeholder="Text" cols="70" rows="6"></textarea>
+            <div class="col-sm-7">
+
+              <textarea name="text" ui-tinymce ng-model="page.text" class="form-control" placeholder="Text" cols="70" rows="6"></textarea>
             </div>
           </div>
       </div>
@@ -208,11 +209,11 @@
             <div class="col-sm-4">
 
               <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                {{selectedEdition.item.name}}
+                {{selectedEdition.item.name}} ({{selectedEdition.item.edition}})
                 <span class="caret"></span>
               </button>
               <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                <li role="presentation"><a role="menuitem" href="javascript:void(0)" ng-click="selectEdition(item)" ng-repeat="item in editions.items">{{item.name}}</a></li>
+                <li role="presentation" ng-class="{'selected' : $index == 0 }"><a role="menuitem" href="javascript:void(0)" ng-click="selectEdition(item)" ng-repeat="item in editions.items">{{item.name}} ({{item.edition}})</a></li>
               </ul>
             </div>
         </div>

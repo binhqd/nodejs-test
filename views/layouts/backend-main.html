@@ -125,31 +125,36 @@
     <script src="/assets/js/bootstrap-typeahead.js"></script>
 
     <script src="/assets/js/vendor/jquery.ui.widget.js"></script>
-<!-- The Templates plugin is included to render the upload/download listings -->
-<script src="/assets/js/tmpl.min.js"></script>
-<!-- The Load Image plugin is included for the preview images and image resizing functionality -->
-<script src="/assets/js/load-image.all.min.js"></script>
-<!-- The Canvas to Blob plugin is included for image resizing functionality -->
-<script src="/assets/js/canvas-to-blob.min.js"></script>
-<!-- blueimp Gallery script -->
-<script src="/assets/js/jquery.blueimp-gallery.min.js"></script>
-<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
-<script src="/assets/js/jquery.iframe-transport.js"></script>
-<!-- The basic File Upload plugin -->
-<script src="/assets/js/jquery.fileupload.js"></script>
-<!-- The File Upload processing plugin -->
-<script src="/assets/js/jquery.fileupload-process.js"></script>
-<!-- The File Upload image preview & resize plugin -->
-<script src="/assets/js/jquery.fileupload-image.js"></script>
-<!-- The File Upload audio preview plugin -->
-<script src="/assets/js/jquery.fileupload-audio.js"></script>
-<!-- The File Upload video preview plugin -->
-<script src="/assets/js/jquery.fileupload-video.js"></script>
-<!-- The File Upload validation plugin -->
-<script src="/assets/js/jquery.fileupload-validate.js"></script>
-<!-- The File Upload user interface plugin -->
-<script src="/assets/js/jquery.fileupload-ui.js"></script>
 
+    <% if(title == "Pages") { %>
+    <!-- The Templates plugin is included to render the upload/download listings -->
+    <script src="/assets/js/tmpl.min.js"></script>
+    <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
+    <script src="/assets/js/load-image.all.min.js"></script>
+    <!-- The Canvas to Blob plugin is included for image resizing functionality -->
+    <script src="/assets/js/canvas-to-blob.min.js"></script>
+    <!-- blueimp Gallery script -->
+    <script src="/assets/js/jquery.blueimp-gallery.min.js"></script>
+    <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+    <script src="/assets/js/jquery.iframe-transport.js"></script>
+    <!-- The basic File Upload plugin -->
+    <script src="/assets/js/jquery.fileupload.js"></script>
+    <!-- The File Upload processing plugin -->
+    <script src="/assets/js/jquery.fileupload-process.js"></script>
+    <!-- The File Upload image preview & resize plugin -->
+    <script src="/assets/js/jquery.fileupload-image.js"></script>
+    <!-- The File Upload audio preview plugin -->
+    <script src="/assets/js/jquery.fileupload-audio.js"></script>
+    <!-- The File Upload video preview plugin -->
+    <script src="/assets/js/jquery.fileupload-video.js"></script>
+    <!-- The File Upload validation plugin -->
+    <script src="/assets/js/jquery.fileupload-validate.js"></script>
+    <!-- The File Upload user interface plugin -->
+    <script src="/assets/js/jquery.fileupload-ui.js"></script>
+
+    <script type="text/javascript" src="/bower_components/tinymce/tinymce.min.js"></script>
+    <script type="text/javascript" src="/bower_components/angular-ui-tinymce/src/tinymce.js"></script>
+    <% } %>
     <script>
     $(document).ready(function() {
       $("#menu-toggle").click(function(e) {

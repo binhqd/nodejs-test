@@ -67,8 +67,13 @@ BackendCtrls
         }
 
         $http(req).success(function(res) {
-            // TODO: Check if res.meta.code == 200
-            $scope.editions.items.splice(index, 1);
+            if (res.code == 200) {
+                $scope.editions.items.splice(index, 1);
+            } else {
+                alert(res.message);
+            }
+
+            
         }).error(function(){
             console.log('err');
         });

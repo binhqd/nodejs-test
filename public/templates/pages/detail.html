@@ -10,7 +10,7 @@
   <dd>{{page.current.subtitle}}</dd>
 
   <dt>Text</dt>
-  <dd>{{page.current.text}}</dd>
+  <dd ng-bind-html="page.current.text"></dd>
 
   <h3>Images:</h3>
   <div class="color-swatches col-sm-8">

@@ -73,13 +73,23 @@ BackendCtrls
         url: '/editions/search'
     }
     $http(req).success(function(res) {
-        $scope.editions.items = res.data.items;
+        if (!!res.data.items && res.data.items.length > 0) {
+            $scope.selectedEdition.item = res.data.items[0];
+            $scope.editions.items = res.data.items;
+        } else {
+            alert('You need to add new Edition before adding new page');
+            window.location = '/pages/#/add';
+        }
+        
     }).error(function(){
         console.log('err');
     });
 
+    // Initialize toolbar
+    
+
     $scope.addType = "news";
-    $scope.typeLabel = "Select Menu";
+    $scope.typeLabel = "News";
 
     $scope.specification = {};
     $scope.specifications = {};
@@ -112,7 +122,12 @@ BackendCtrls
     }
 
     $scope.news = {};
-    $scope.savePage = function() {
+    $scope.savePage = function(isValid) {
+        if (!isValid) {
+            alert('Invalid input. Please check your form');
+            return;
+        }
+
         var postData = $scope.page;
         postData.uploadedImages = [];
         postData.addType = $scope.addType;
@@ -132,6 +147,13 @@ BackendCtrls
                 value: $scope.specifications.items[i].value
             };
         }
+
+        /**
+         * Validation
+         * */
+
+
+
         //postData.specifications = $scope.specifications.items;
         //console.log($.param(postData));
         var req = {
@@ -151,6 +173,8 @@ BackendCtrls
         }).error(function(){
             console.log('err');
         }); 
+
+
     }
 })
 
@@ -235,7 +259,7 @@ BackendCtrls
     }
 })
 
-.controller('PageDetailCtrl', function ($scope, $http, $stateParams) {
+.controller('PageDetailCtrl', function ($scope, $http, $stateParams, $sce) {
     var req = {
         method: 'GET',
         url: '/pages/' + $stateParams.id
@@ -243,6 +267,8 @@ BackendCtrls
 
     $http(req).success(function(res) {
         $scope.page = {};
+
+        res.page.text = $sce.trustAsHtml(res.page.text);
 
         $scope.page.current = res.page;
     }).error(function(){

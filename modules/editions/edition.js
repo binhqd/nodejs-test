@@ -59,7 +59,7 @@ module.exports = function (options) {
 
         Edition.prototype.search = function () {
             var _this = this;
-            db.all("SELECT id,name,edition FROM editions order by id", function(err, rows){
+            db.all("SELECT id,name,edition FROM editions order by id desc", function(err, rows){
                 _this.res.json({
                     data : {
                         items : rows
@@ -79,13 +79,23 @@ module.exports = function (options) {
 
         Edition.prototype.delete = function () {
             var id = this.req.params.id;
-            var stmt = this.db.prepare("DELETE from editions where id = ?");
-            stmt.run(id);
-            stmt.finalize();
 
-            this.db.close();
+            db.get("select count(*) as total from pages where edition_id = ?", id, function(err, result) {
+                if (result['total'] > 0) {
+                    db.close();
 
-            res.json(200, {code: 200, message: "OK"});
+                    res.json(200, {
+                        code : 405,
+                        message : 'There still '+result['total']+' page'+(result['total'] == 1 ? '' : 's')+' that refer to this edition. Please remove that page first'
+                    });
+                } else {
+                    db.run("DELETE from editions where id = ?", id, function() {
+                        db.close();
+                    });
+                    res.json(200, {code: 200, message: "OK"});
+                }
+                
+            });
         };
 
         var edition = new Edition(req, res, db, function (result, redirect) {

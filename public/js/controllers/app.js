@@ -3,7 +3,8 @@ var pages = angular.module('pagesApp', [
 	'BackendCtrls',
 	'ui.router',
 	'ngDialog',
-	'ui.bootstrap'
+	'ui.bootstrap',
+  'ui.tinymce'
 ]);
 
 var BackendCtrls = angular.module('BackendCtrls', []);

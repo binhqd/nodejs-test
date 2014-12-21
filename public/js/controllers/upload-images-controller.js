@@ -79,10 +79,7 @@ BackendCtrls
                     
                     num = number++;
                     num++;
-                    // if (maxFile!=0 && number>=maxFile) {
-                    //     $('#<?php echo $formID?> .span7 #disable').addClass("disable");
-                    //     dropzone.addClass("disable");
-                    // }
+                    
                 });
     
                 // Callback after added images
@@ -91,9 +88,6 @@ BackendCtrls
     
                     var input = $("<input ref=\'"+data.result.files[0].deleteUrl+"\' type=\'hidden\' class='uploadedImage' name=\'images[]\' value=\'"+data.result.files[0].name+"\'/>");
                     $("#inputFiles").append(input);
-                    
-                    //$scope.listings.original.items[]
-                    //console.log(data.result.files[0]);
                     
                     $scope.$apply(function () {
                         $scope.uploadedImages.items[$scope.uploadedImages.items.length] = data.result.files[0];
