@@ -1,0 +1,27 @@
+<h3>Editions</h3>
+
+<div  class="col-sm-8">
+  [ <a href='/editions/#/add'>Add new Edition</a> ]
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="col-sm-1">#</th>
+          <th class="col-sm-4">Name</th>
+          <th class="col-sm-2">Edition</th>
+          <th class="col-sm-3">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in editions.items">
+          <td>{{ item.id }}</td>
+
+          <td><a href='/editions/#/detail/{{ item.id }}'>{{ item.name }}</a><br/>
+              <i>{{ item.subtitle }}</i>
+          </td>
+          <td>{{ item.edition }}</td>
+          <td>[ <a href='#/detail/{{item.id}}'>View</a> | <a href='#/edit/{{item.id}}'>Edit</a> | <a href='javascript:void(0)' ng-click="delete(item.id, $index)">Delete</a> ]</td>
+        </tr>
+        
+      </tbody>
+    </table>
+</div>

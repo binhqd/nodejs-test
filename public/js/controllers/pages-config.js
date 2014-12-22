@@ -30,4 +30,31 @@ pages.config(function($routeProvider, $stateProvider) {
 			}
 		}
 	})
+	.state('listcats', {
+		url: '/cats',
+		views: {
+			'tabContent': {
+				templateUrl: '/templates/pages/list-category.html',
+				controller: 'ManageSpecCtrl'
+			}
+		}
+	})
+	.state('addCat', {
+		url: '/cats/add',
+		views: {
+			'tabContent': {
+				templateUrl: '/templates/pages/form-category.html',
+				controller: 'ManageSpecCtrl'
+			}
+		}
+	})
+	.state('editCat', {
+		url: '/cats/edit/:id',
+		views: {
+			'tabContent': {
+				templateUrl: '/templates/pages/form-category.html',
+				controller: 'ManageSpecCtrl'
+			}
+		}
+	})
 });

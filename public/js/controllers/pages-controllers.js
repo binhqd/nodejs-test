@@ -230,7 +230,7 @@ BackendCtrls
 
 
 })
-.controller('AddPageCategoryCtrl', function ($scope,$http, transformRequestAsFormPost) {
+.controller('AddPageCategoryCtrl', function ($scope,$http, transformRequestAsFormPost, $timeout) {
     $scope.saveCategory = function() {
         if ($scope.form.title == "") {
             alert("Category name can't be left blank");
@@ -256,6 +256,82 @@ BackendCtrls
         }).error(function(){
             console.log('err');
         }); 
+    }
+
+    $scope.deleteCat = function(item, index) {
+        if (confirm("Delete this category also delete all technical specifications related to it. Do you want to continue?")) {
+            var req = {
+                method: 'DELETE',
+                url: '/pages/categories/' + item.id
+            }
+            $http(req).success(function(res) {
+                if (res.code == 200) {
+                    // select different category if it are being deleted
+                    if ($scope.selectedCategory.item.id == $scope.category.items[index].id) {
+                        if (!!$scope.category.items[0]) {
+                            $scope.selectedCategory.item = $scope.category.items[0];
+                        }
+                    }
+
+                    $scope.category.items.splice(index, 1);
+                } else {
+                    alert(res.message);
+                }
+            }).error(function(){
+                console.log(err);
+            }); 
+        }
+    }
+
+    $scope.cat = {};
+    $scope.editCat = function(item, index) {
+        $scope.cat.input = item.title;
+        $scope.showEditInput = item.id;
+
+        $scope.cat.beforeText = item.title;
+        $timeout(function() {
+            document.getElementById('cat-' + index).focus();
+        }, 100);
+    }
+
+    $scope.updateCat = function(item, index) {
+        if ($scope.cat.input != $scope.cat.beforeText) {
+            var req = {
+                method: 'PUT',
+                url: '/pages/categories/' + item.id,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+                },
+                transformRequest: transformRequestAsFormPost,
+                data: {
+                    id : item.id,
+                    title : $scope.cat.input
+                }
+            }
+
+            $http(req).success(function(res) {
+                if (res.code == 200) {
+                    if ($scope.showEditInput == item.id) {
+                        $scope.showEditInput = -1;
+                    }
+
+                    item.title = $scope.cat.input;
+                    $scope.category.items[index] = {
+                        id : item.id,
+                        title : $scope.cat.input
+                    }
+                } else {
+                    alert(res.message);
+                }
+            }).error(function(){
+                console.log(err);
+            });
+        } else {
+            // remove input state
+            $scope.showEditInput = -1;
+
+            //console.log('Nothing to update');
+        }
     }
 })
 

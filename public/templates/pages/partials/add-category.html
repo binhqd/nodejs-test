@@ -1,4 +1,26 @@
-<h3>Add Category</h3>
+<h3>Manage Categories</h3>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th class="col-sm-1">#</th>
+      <th class="col-sm-4">Name</th>
+      <th class="col-sm-3">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="item in category.items">
+      <td>{{ $index + 1 }}</td>
+      <td ng-click="editCat(item, $index)"><span ng-show="showEditInput != item.id">{{ item.title }}</span>
+        <div ng-show="showEditInput == item.id">
+          <input ng-model="cat.input" id="cat-{{$index}}" class="col-sm-10" ng-blur="updateCat(item, index)"/>
+        </div>
+      </td>
+      <td>[ <a href='javascript:void(0)' ng-click="editCat(item, $index)">Edit</a> | <a href='javascript:void(0)' ng-click="deleteCat(item, $index)">Delete</a> ]</td>
+    </tr>
+    
+  </tbody>
+</table>
+<h3>Add new Category</h3>
 <form novalidate class="form-horizontal" role="form" name="addCategory" ng-submit="saveCategory(addCategory.$valid)">
   <div class="form-group">
     <label for="txtName" class="col-sm-2 control-label">Name</label>

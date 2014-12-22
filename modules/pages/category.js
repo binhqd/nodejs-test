@@ -30,13 +30,24 @@ module.exports = function (options) {
             //res.end();
         };
 
-        PageCategoryModel.prototype.delete = function () {
-            var id = this.req.params.id;
-            var stmt = this.db.prepare("DELETE from pages where id = ?");
-            stmt.run(id);
-            stmt.finalize();
+        PageCategoryModel.prototype.put = function () {
+            var title = this.req.body.title;
+            var row = this.req.body;
+            
+            db.run("UPDATE page_categories set title = ? where id = ?", title, this.req.body.id, function(err) {
+                console.log(err);
+                res.json(200, {code: 200, message: "Update successful"});
+            });
+            
+            db.close();
+            //res.end();
+        };
 
-            this.db.close();
+        PageCategoryModel.prototype.delete = function () {
+            db.run("DELETE from page_categories where id = ?", this.req.params.id, function(err) {
+
+            });
+            db.close();
 
             res.json(200, {code: 200, message: "OK"});
         }
@@ -65,6 +76,10 @@ module.exports = function (options) {
                 break;
             case 'POST':
                 category.post();
+
+                break;
+            case 'PUT':
+                category.put();
 
                 break;
             case 'DELETE':
