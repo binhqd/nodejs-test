@@ -192,7 +192,19 @@ BackendCtrls
 
 .controller('AddPageCtrl', function ($scope,$http,transformRequestAsFormPost, $timeout) {
 	$scope.isNew = true;
-
+	$scope.page = {
+        id : null,
+        title : "",
+        subtitle : "",
+        author : "",
+        text : "",
+        status : 0,
+        type : 1,
+        edition_id : null,
+        photos : [],
+        addType : "news",
+        typeLabel : "News"
+    };
 	// reset
 	$scope.uploadedImages = {
 		items : []
