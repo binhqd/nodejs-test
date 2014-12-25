@@ -192,6 +192,12 @@ BackendCtrls
 
 .controller('AddPageCtrl', function ($scope,$http,transformRequestAsFormPost, $timeout) {
 	$scope.isNew = true;
+
+	// reset
+	$scope.uploadedImages = {
+		items : []
+	};
+
     var req = {
         method: 'GET',
         url: '/editions/search'
