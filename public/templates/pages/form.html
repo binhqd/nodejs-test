@@ -107,7 +107,7 @@
 	
 	
 	<form novalidate class="form-horizontal" role="form" name='frmPage' ng-submit="savePage(frmPage.$valid)">
-		<input type='hidden' name="addType" ng-value="addType" />
+		<input type='hidden' name="addType" ng-value="page.addType" />
 	
 		<div class="form-group">
 			<div class="dropdown">
@@ -116,19 +116,19 @@
 				<div class="col-sm-4">
 	
 					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-						{{typeLabel}} <span class="caret"></span>
+						{{page.typeLabel}} <span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-						<li role="presentation" ng-class="{'selected' : addType == 'image'}"><a role="menuitem" tabindex="-1" href="javascript:void(0)" ng-click="selectType('image')">Image</a></li>
-						<li role="presentation" ng-class="{'selected' : addType == 'article'}"><a role="menuitem" tabindex="-1" href="javascript:void(0)" ng-click="selectType('article')">Article</a></li>
-						<li role="presentation" ng-class="{'selected' : addType == 'news'}"><a role="menuitem" tabindex="-1" href="javascript:void(0)" ng-click="selectType('news')">News</a></li>
+						<li role="presentation" ng-class="{'selected' : page.addType == 'image'}"><a role="menuitem" tabindex="-1" href="javascript:void(0)" ng-click="selectType('image')">Image</a></li>
+						<li role="presentation" ng-class="{'selected' : page.addType == 'article'}"><a role="menuitem" tabindex="-1" href="javascript:void(0)" ng-click="selectType('article')">Article</a></li>
+						<li role="presentation" ng-class="{'selected' : page.addType == 'news'}"><a role="menuitem" tabindex="-1" href="javascript:void(0)" ng-click="selectType('news')">News</a></li>
 					</ul>
 				</div>
 			</div>
 		</div>
 	
 		<fieldset>
-			<legend>Page: {{typeLabel == "Select Menu" ? "News" : typeLabel}}</legend>
+			<legend>Page: {{page.typeLabel == "Select Menu" ? "News" : page.typeLabel}}</legend>
 			<div class="color-swatches col-sm-8">
 				<div class="color-swatch gray-lighter">
 					<div class="row">
@@ -142,7 +142,7 @@
 				[ <a href='javascript:void(0)' ng-click="addImages()">Add images</a> ]
 			</div>
 			<div class="clearfix"></div>
-			<div ng-show="addType=='news' || addType=='article'">
+			<div ng-show="page.addType=='news' || page.addType=='article'">
 				<div class="form-group">
 					<label for="txtTitle" class="col-sm-2 control-label">Title</label>
 					<div class="col-sm-4">
@@ -171,7 +171,7 @@
 			</div>
 		</fieldset>
 	
-		<fieldset ng-show="addType=='article'" ng-controller="ManageSpecCtrl">
+		<fieldset ng-show="page.addType=='article'" ng-controller="ManageSpecCtrl">
 			<legend>Technical Specification</legend>
 	
 			<div class="col-sm-9">
