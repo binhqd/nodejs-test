@@ -1,0 +1,232 @@
+<link rel="stylesheet" href="/assets/css/pages.css">
+<!-- blueimp Gallery styles -->
+
+<link rel="stylesheet" href="/blueimp.uploader/css/blueimp-gallery.min.css">
+<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+<link rel="stylesheet" href="/assets/css/jquery.fileupload.css">
+<link rel="stylesheet" href="/assets/css/jquery.fileupload-ui.css">
+
+<!-- The template to display files available for upload -->
+<script id="template-upload" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-upload fade">
+        <td>
+            <span class="preview"></span>
+        </td>
+        <td>
+            <p class="name">{%=file.name%}</p>
+            <strong class="error text-danger"></strong>
+        </td>
+        <td>
+            <p class="size">Processing...</p>
+            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-bar progress-bar-success" style="width:0%;"></div></div>
+        </td>
+        <td>
+            {% if (!i && !o.options.autoUpload) { %}
+                <button class="btn btn-primary start" disabled>
+                    <i class="glyphicon glyphicon-upload"></i>
+                    <span>Start</span>
+                </button>
+            {% } %}
+            {% if (!i) { %}
+                <button class="btn btn-warning cancel">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                    <span>Cancel</span>
+                </button>
+            {% } %}
+        </td>
+    </tr>
+{% } %}
+</script>
+<!-- The template to display files available for download -->
+<script id="template-download" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-download fade">
+        <td>
+            <span class="preview">
+                {% if (file.thumbnailUrl) { %}
+                    <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" data-gallery><img src="{%=file.thumbnailUrl%}"></a>
+                {% } %}
+            </span>
+        </td>
+        <td>
+            <p class="name">
+                {% if (file.url) { %}
+                    <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
+                {% } else { %}
+                    <span>{%=file.name%}</span>
+                {% } %}
+            </p>
+            {% if (file.error) { %}
+                <div><span class="label label-danger">Error</span> {%=file.error%}</div>
+            {% } %}
+        </td>
+        <td>
+            <span class="size">{%=o.formatFileSize(file.size)%}</span>
+        </td>
+        <td>
+            {% if (file.deleteUrl) { %}
+                <button class="btn btn-danger delete" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"{% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
+                    <i class="glyphicon glyphicon-trash"></i>
+                    <span>Delete</span>
+                </button>
+                <input type="checkbox" name="delete" value="1" class="toggle">
+            {% } else { %}
+                <button class="btn btn-warning cancel">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                    <span>Cancel</span>
+                </button>
+            {% } %}
+        </td>
+    </tr>
+{% } %}
+</script>
+
+<h3>{{!!isNew ? "CREATE" : "UPDATE"}} PAGE</h3>
+
+<div class="container" ng-controller="UploadImagesCtrl" ng-hide="true">
+	<!-- The file upload form used as target for the file upload widget -->
+	<form id="fileupload" action="//jquery-file-upload.appspot.com/" method="POST" enctype="multipart/form-data">
+		<!-- Redirect browsers with JavaScript disabled to the origin page -->
+		<!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+		<div class="row fileupload-buttonbar">
+			<div class="col-lg-7">
+				<!-- The fileinput-button span is used to style the file input field as button -->
+				<span class="btn btn-success fileinput-button"> <i class="glyphicon glyphicon-plus"></i> <span>Add files...</span> <input id='selectFiles' type="file"
+					name="files[]" multiple>
+				</span>
+			</div>
+		</div>
+		<!-- The table listing the files available for upload/download -->
+		<table role="presentation" class="table table-striped">
+			<tbody class="files"></tbody>
+		</table>
+	</form>
+</div>
+
+
+
+<form novalidate class="form-horizontal" role="form" name='frmPage' ng-submit="savePage(frmPage.$valid)" ng-controller="PageFormCtrl">
+	<input type='hidden' name="addType" ng-value="addType" />
+
+	<div class="form-group">
+		<div class="dropdown">
+			<label for="dropType" class="col-sm-2 control-label">Type</label>
+
+			<div class="col-sm-4">
+
+				<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+					{{typeLabel}} <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+					<li role="presentation" ng-class="{'selected' : addType == 'image'}"><a role="menuitem" tabindex="-1" href="javascript:void(0)" ng-click="selectType('image')">Image</a></li>
+					<li role="presentation" ng-class="{'selected' : addType == 'article'}"><a role="menuitem" tabindex="-1" href="javascript:void(0)" ng-click="selectType('article')">Article</a></li>
+					<li role="presentation" ng-class="{'selected' : addType == 'news'}"><a role="menuitem" tabindex="-1" href="javascript:void(0)" ng-click="selectType('news')">News</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<fieldset>
+		<legend>Page: {{typeLabel == "Select Menu" ? "News" : typeLabel}}</legend>
+		<div class="color-swatches col-sm-8">
+			<div class="color-swatch gray-lighter">
+				<div class="row">
+					<div class="col-xs-6 col-md-3 image-item" ng-repeat="image in uploadedImages.items">
+						<div class='delete' ng-click="removePhoto(image, $index)"></div>
+						<a href="javascript:void(0)" class="thumbnail"> <img src="{{image.url}}" alt="{{image.originalName}}">
+						</a>
+					</div>
+				</div>
+			</div>
+			[ <a href='javascript:void(0)' ng-click="addImages()">Add images</a> ]
+		</div>
+		<div class="clearfix"></div>
+		<div ng-show="addType=='news' || addType=='article'">
+			<div class="form-group">
+				<label for="txtTitle" class="col-sm-2 control-label">Title</label>
+				<div class="col-sm-4">
+					<input type="text" class="form-control" ng-model="page.title" id="txtTitle" placeholder="Title" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="txtSubtitle" class="col-sm-2 control-label">Subtitle</label>
+				<div class="col-sm-4">
+					<input type="text" class="form-control" ng-model="page.subtitle" id="txtSubtitle" placeholder="Subtitle">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="txtAuthor" class="col-sm-2 control-label">Author</label>
+				<div class="col-sm-4">
+					<input type="text" class="form-control" ng-model="page.author" id="txtAuthor" placeholder="Author">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="txtText" class="col-sm-2 control-label">Text</label>
+				<div class="col-sm-7">
+
+					<textarea name="text" ui-tinymce ng-model="page.text" class="form-control" placeholder="Text" cols="70" rows="6"></textarea>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+
+	<fieldset ng-show="addType=='article'" ng-controller="ManageSpecCtrl">
+		<legend>Technical Specification</legend>
+
+		<div class="col-sm-9">
+			<table class="table table-striped">
+				<thead ng-show="specifications.items.length > 0">
+					<tr>
+						<th class="col-sm-1">#</th>
+						<th class="col-sm-4">Name</th>
+						<th class="col-sm-2">Value</th>
+						<th class="col-sm-2">Category</th>
+						<th class="col-sm-3">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="spec in specifications.items">
+						<td>{{ ($index + 1) }}</td>
+
+						<td><a href='/pages/#/detail/{{ item.id }}'>{{ spec.name }}</a></td>
+						<td>{{ spec.value }}</td>
+						<td>{{ spec.categoryName }}</td>
+						<td>[ <a href='javascript:void(0)' ng-click="delete(spec, $index)">Remove</a> ]
+						</td>
+					</tr>
+
+				</tbody>
+			</table>
+			[ <a href='javascript:void(0)' ng-click="openAddSpec()">Add new Specification</a> ]
+			<div style="text-align: right"></div>
+		</div>
+	</fieldset>
+	<div class="form-group">
+		<div class="dropdown">
+			<label for="dropType" class="col-sm-2 control-label">Edition:</label>
+
+			<div class="col-sm-4">
+
+				<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+					{{selectedEdition.item.name}} ({{selectedEdition.item.edition}}) <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+					<li role="presentation" ng-class="{'selected' : $index == 0 }"><a role="menuitem" href="javascript:void(0)" ng-click="selectEdition(item)"
+						ng-repeat="item in editions.items">{{item.name}} ({{item.edition}})</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<button type="submit" class="btn btn-default btn-primary">Save</button>
+			<button type="reset" class="btn btn-default">Reset</button>
+		</div>
+	</div>
+	<div style="display: none" id='inputFiles'></div>
+</form>
+<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+
+

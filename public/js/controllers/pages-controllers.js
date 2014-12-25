@@ -1,53 +1,111 @@
+
 BackendCtrls
 .controller('NewsDetailCtrl', function ($scope,$http, $stateParams) {
     var id = $stateParams.id;
 
-    
+
 })
-.controller('PagesCtrl', function ($scope,$http) {        
-    $scope.news = {};
+.controller('PageFormCtrl', function($scope, $http, $stateParams) {
 
-    var req = {
-        method: 'GET',
-        url: '/pages/search',
-        headers: {
-            'Content-Type': 'application/json; charset=utf-8'
+	$scope.removePhoto = function(image, index) {
+		if (confirm("Are you sure to remove this image?")) {
+			$scope.uploadedImages.items.splice(index, 1);
+		}
+	}
+
+	$scope.savePage = function(isValid) {
+        if (!isValid) {
+            alert('Invalid input. Please check your form');
+            return;
         }
-    }
 
-    $http(req).success(function(res) {
-        $scope.pages = {};
-        $scope.pages.items = res.data.items;
-        
-    }).error(function(){
-        console.log('err');
-    });
+        var postData = $scope.page;
+        postData.uploadedImages = [];
+        postData.addType = $scope.addType;
 
-    $scope.delete = function(newsId, index) {
-        var req = {
-            method: 'DELETE',
-            url: '/pages/news/' + newsId,
-            headers: {
-                'Content-Type': 'application/json; charset=utf-8'
+        postData.uploadedImages = [];
+//        $('#inputFiles .uploadedImage').each(function(e) {
+//            postData.uploadedImages[postData.uploadedImages.length] = $(this).val();
+//        });
+
+        for (var i = 0; i < $scope.uploadedImages.items.length; i++) {
+        	postData.uploadedImages.push($scope.uploadedImages.items[i].name);
+        }
+
+        postData.edition_id = $scope.selectedEdition.item.id;
+
+        postData.specifications = [];
+        for (var i = 0; i < $scope.specifications.items.length; i++) {
+            postData.specifications[postData.specifications.length] = {
+                category_id: $scope.specifications.items[i].category_id,
+                name: $scope.specifications.items[i].name,
+                value: $scope.specifications.items[i].value
+            };
+        }
+
+        /**
+         * Validation
+         */
+
+        if (!$scope.isNew) {
+            var req = {
+                method: 'PUT',
+                url: '/pages/' + $scope.page.id,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+                },
+                // transformRequest: transformRequestAsFormPost,
+                data: $.param(postData)
             }
-        }
-
-        if (confirm("Are you sure to delete this page?")) {
-            $http(req).success(function(res) {                    
-                $scope.pages.items.splice(index, 1);
-                alert("Page #"+newsId+" has been deleted");
+            $http(req).success(function(res) {
+                // window.location = "/pages/#/news";
+                // $scope.news = {};
+                alert("Page has been saved successful");
+                window.location = "#/list";
+            }).error(function(){
+                console.log('err');
+            });
+        } else {
+            var req = {
+                method: 'POST',
+                url: '/pages',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+                },
+                // transformRequest: transformRequestAsFormPost,
+                data: $.param(postData)
+            }
+            $http(req).success(function(res) {
+                // window.location = "/pages/#/news";
+                // $scope.news = {};
+                alert("Page has been saved successful");
+                window.location = "#/list";
             }).error(function(){
                 console.log('err');
             });
         }
-        
     }
 })
+.controller('PagesCtrl', function ($scope,$http) {
+    $scope.status = {
+        0  : 'image',
+        1: 'article',
+        2: 'news'
+    }
 
-.controller('AddPageCtrl', function ($scope,$http,transformRequestAsFormPost, $timeout) {
     $scope.uploadedImages = {};
     $scope.uploadedImages.items = [];
-    $scope.page = {};
+    $scope.page = {
+        id : null,
+        title : "",
+        subtitle : "",
+        author : "",
+        text : "",
+        status : 0,
+        type : 1,
+        edition_id : null,
+        photos : []
+    };
     $scope.article = {};
     $scope.category = {
         items : []
@@ -68,26 +126,6 @@ BackendCtrls
         }
     };
 
-    var req = {
-        method: 'GET',
-        url: '/editions/search'
-    }
-    $http(req).success(function(res) {
-        if (!!res.data.items && res.data.items.length > 0) {
-            $scope.selectedEdition.item = res.data.items[0];
-            $scope.editions.items = res.data.items;
-        } else {
-            alert('You need to add new Edition before adding new page');
-            window.location = '/pages/#/add';
-        }
-        
-    }).error(function(){
-        console.log('err');
-    });
-
-    // Initialize toolbar
-    
-
     $scope.addType = "news";
     $scope.typeLabel = "News";
 
@@ -98,8 +136,6 @@ BackendCtrls
     $scope.selectEdition = function(item) {
         $scope.selectedEdition.item = item;
     }
-
-    
 
     $scope.selectType = function(type) {
         $scope.addType = type;
@@ -117,65 +153,145 @@ BackendCtrls
     }
 
     $scope.addImages = function() {
-        
+
         $('#selectFiles').trigger('click');
     }
 
-    $scope.news = {};
-    $scope.savePage = function(isValid) {
-        if (!isValid) {
-            alert('Invalid input. Please check your form');
-            return;
-        }
-
-        var postData = $scope.page;
-        postData.uploadedImages = [];
-        postData.addType = $scope.addType;
-
-        postData.uploadedImages = [];
-        $('#inputFiles .uploadedImage').each(function(e) {
-            postData.uploadedImages[postData.uploadedImages.length] = $(this).val();
-        });
-
-        postData.edition_id = $scope.selectedEdition.item.id;
-
-        postData.specifications = [];
-        for (var i = 0; i < $scope.specifications.items.length; i++) {
-            postData.specifications[postData.specifications.length] = {
-                category_id: $scope.specifications.items[i].category_id,
-                name: $scope.specifications.items[i].name,
-                value: $scope.specifications.items[i].value
-            };
-        }
-
-        /**
-         * Validation
-         * */
 
 
-
-        //postData.specifications = $scope.specifications.items;
-        //console.log($.param(postData));
+    $scope.delete = function(newsId, index) {
         var req = {
-            method: 'POST',
-            url: '/pages',
+            method: 'DELETE',
+            url: '/pages/news/' + newsId,
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
-            },
-            //transformRequest: transformRequestAsFormPost,
-            data: $.param(postData)
+                'Content-Type': 'application/json; charset=utf-8'
+            }
         }
-        $http(req).success(function(res) {                    
-            //window.location = "/pages/#/news";
-            //$scope.news = {};
-            alert("Page has been saved successful");
-            window.location = "#/list";
+
+        if (confirm("Are you sure to delete this page?")) {
+            $http(req).success(function(res) {
+                $scope.pages.items.splice(index, 1);
+                alert("Page #"+newsId+" has been deleted");
+            }).error(function(){
+                console.log('err');
+            });
+        }
+    }
+
+})
+.controller('ListPageCtrl', function ($scope,$http,transformRequestAsFormPost, $timeout, $stateParams) {
+    var req = {
+        method: 'GET',
+        url: '/pages/search',
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+        }
+    }
+
+    $http(req).success(function(res) {
+        $scope.pages = {};
+        $scope.pages.items = res.data.items;
+
+    }).error(function(){
+        console.log('err');
+    });
+})
+.controller('EditPageCtrl', function ($scope,$http,transformRequestAsFormPost, $timeout, $stateParams) {
+    var id = $stateParams.id;
+    $scope.isNew = false;
+
+    var req = {
+        method: 'GET',
+        url: '/pages/' + $stateParams.id
+    }
+
+    $http(req).success(function(res) {
+        $scope.page = {};
+
+        $scope.page = angular.copy(res.page);
+        $scope.page.title = res.page.title;
+        $scope.selectType($scope.status[res.page.type]);
+
+// postData.specifications
+        var specs = [];
+        for (var i = 0; i < res.page.specifications.length; i++) {
+            specs[i] = res.page.specifications[i];
+            specs[i].categoryName = specs[i].category.title;
+            specs[i].category_id = specs[i].category.id;
+        }
+        $scope.specifications.items = res.page.specifications;
+
+        // Get editions
+        var req = {
+            method: 'GET',
+            url: '/editions/search'
+        }
+        $http(req).success(function(result) {
+            if (!!result.data.items && result.data.items.length > 0) {
+                // $scope.selectedEdition.item = res.data.items[0];
+                $scope.editions.items = result.data.items;
+
+                for (var i = 0; i < result.data.items.length; i++) {
+                    if (result.data.items[i].id == res.page.edition_id) {
+                        $scope.selectedEdition.item = result.data.items[i];
+                        break;
+                    }
+                }
+            } else {
+                alert('You need to add new Edition before adding new page');
+                window.location = '/pages/#/add';
+            }
+
         }).error(function(){
             console.log('err');
-        }); 
+        });
+
+        // images
+        $scope.uploadedImages.items = [];
+        for (var i = 0; i < res.page.photos.length; i++) {
+            var photo = res.page.photos[i];
+
+            $scope.uploadedImages.items[i] = {
+                url : '/uploads/' + photo.image,
+                originalName : photo.image,
+                id : res.page.photos[i].id,
+                name : photo.image
+            }
+        }
+
+    }).error(function(){
+        console.log('err');
+    });
 
 
+})
+
+.controller('AddPageCtrl', function ($scope,$http,transformRequestAsFormPost, $timeout) {
+	$scope.uploadedImages = [];
+	$scope.page = {};
+	$scope.specifications.items = [];
+
+	$scope.isNew = true;
+    var req = {
+        method: 'GET',
+        url: '/editions/search'
     }
+    $http(req).success(function(res) {
+        if (!!res.data.items && res.data.items.length > 0) {
+            $scope.selectedEdition.item = res.data.items[0];
+            $scope.editions.items = res.data.items;
+
+
+        } else {
+            alert('You need to add new Edition before adding new page');
+            window.location = '/pages/#/add';
+        }
+
+    }).error(function(){
+        console.log('err');
+    });
+
+
 })
 
 .controller('ManageSpecCtrl', function ($scope,$http, ngDialog, transformRequestAsFormPost) {
@@ -187,16 +303,22 @@ BackendCtrls
             $scope.category.items = res.data.items;
         }).error(function(){
             console.log('err');
-        }); 
+        });
 
     $scope.selectCategory = function(item) {
         $scope.selectedCategory.item = item;
     }
 
-    
+
+    $scope.delete = function(spec, index) {
+		if (confirm('Are you sure to remove this specification?')) {
+			$scope.specifications.items.splice(index, 1);
+		}
+
+    }
 
     $scope.openAddCategory = function() {
-        ngDialog.open({ 
+        ngDialog.open({
             template: '/templates/pages/partials/add-category.html',
             // controller : 'UploadImageListCtrl',
             scope: $scope,
@@ -205,7 +327,7 @@ BackendCtrls
     }
 
     $scope.openAddSpec = function() {
-        ngDialog.open({ 
+        ngDialog.open({
             template: '/templates/pages/partials/add-spec.html',
             controller : function($scope) {
                 $scope.addSpec = function() {
@@ -218,7 +340,7 @@ BackendCtrls
                     ) {
                         return;
                     }
-                    
+
                     $scope.specifications.items.push(spec);
                     $scope.specification = {name:'',value:''};
                     $scope.closeThisDialog('abc');
@@ -255,7 +377,7 @@ BackendCtrls
             $scope.closeThisDialog();
         }).error(function(){
             console.log('err');
-        }); 
+        });
     }
 
     $scope.deleteCat = function(item, index) {
@@ -279,7 +401,7 @@ BackendCtrls
                 }
             }).error(function(){
                 console.log(err);
-            }); 
+            });
         }
     }
 
@@ -330,7 +452,7 @@ BackendCtrls
             // remove input state
             $scope.showEditInput = -1;
 
-            //console.log('Nothing to update');
+            // console.log('Nothing to update');
         }
     }
 })
@@ -349,6 +471,6 @@ BackendCtrls
         $scope.page.current = res.page;
     }).error(function(){
         console.log('err');
-    }); 
+    });
 })
 ;

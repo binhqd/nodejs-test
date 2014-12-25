@@ -21,7 +21,7 @@
           </td>
           <td>{{ item.edition.name }}</td>
           <td>{{ item.edition.edition }}</td>
-          <td>[ <a href='/pages/#/detail/{{ item.id }}'>View</a> | Edit | <a href='javascript:void(0)' ng-click="delete(item.id, $index)">Delete</a> ]</td>
+          <td>[ <a href='/pages/#/detail/{{ item.id }}'>View</a> | <a href='/pages/#/edit/{{ item.id }}'>Edit</a> | <a href='javascript:void(0)' ng-click="delete(item.id, $index)">Delete</a> ]</td>
         </tr>
         
       </tbody>

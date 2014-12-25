@@ -43,7 +43,11 @@ module.exports = function(){
 	app.post('/news', function(req, res, next) {
 		page()(req, res, next);
 	});
-	
+
+	app.put('/:id', function(req, res, next) {
+		page()(req, res, next);
+	});
+
 	app.delete('/categories/:id', function(req, res, next) {
 		category()(req, res, next);
 	});

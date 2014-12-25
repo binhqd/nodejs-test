@@ -1,1 +1,1 @@
-"C:\Program Files\nodejs\node.exe" application.js
+"C:\Program Files\nodejs\node.exe" D:\Projects\editorataboca_apps-master\source\application.js

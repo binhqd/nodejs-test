@@ -1,8 +1,8 @@
 BackendCtrls
 .controller('AddEditionsCtrl', function ($scope, $http,$state, transformRequestAsFormPost) {
-    $scope.form = {};
+            $scope.form = {};
 
-    $scope.saveEdition = function(isValid) {
+        $scope.saveEdition = function(isValid) {
         if (isValid) {
             var req = {
                 method: 'POST',
@@ -38,10 +38,10 @@ BackendCtrls
         method: 'GET',
         url: '/editions/search',
         // headers: {
-        //     'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+        // 'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
         // },
-        //transformRequest: transformRequestAsFormPost,
-        //data: $scope.form
+        // transformRequest: transformRequestAsFormPost,
+        // data: $scope.form
     }
 
     $http(req).success(function(res) {
@@ -50,7 +50,7 @@ BackendCtrls
     }).error(function(){
         console.log('err');
     });
-    
+
     $scope.delete = function(id, index) {
         if (!confirm("Are you sure to delete this edition?")) {
             return;
@@ -60,10 +60,11 @@ BackendCtrls
             method: 'DELETE',
             url: '/editions/' + id,
             // headers: {
-            //     'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+            // 'Content-Type': 'application/x-www-form-urlencoded;
+            // charset=utf-8'
             // },
-            //transformRequest: transformRequestAsFormPost,
-            //data: $scope.form
+            // transformRequest: transformRequestAsFormPost,
+            // data: $scope.form
         }
 
         $http(req).success(function(res) {
@@ -73,7 +74,7 @@ BackendCtrls
                 alert(res.message);
             }
 
-            
+
         }).error(function(){
             console.log('err');
         });
@@ -87,10 +88,10 @@ BackendCtrls
         method: 'GET',
         url: '/editions/detail/' + $stateParams.id,
         // headers: {
-        //     'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+        // 'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
         // },
-        //transformRequest: transformRequestAsFormPost,
-        //data: $scope.form
+        // transformRequest: transformRequestAsFormPost,
+        // data: $scope.form
     }
 
     $http(req).success(function(res) {

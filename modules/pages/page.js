@@ -10,7 +10,7 @@ module.exports = function (options) {
             article : 1,
             news : 2
         }
-        
+
         var PageModel = function (req, res, db, callback) {
             this.req = req;
             this.res = res;
@@ -19,8 +19,8 @@ module.exports = function (options) {
         };
 
         PageModel.prototype.post = function () {
-            //console.log(this.req.body);
-            //res.end();
+            // console.log(this.req.body);
+            // res.end();
             var title = this.req.body.title;
             var subtitle = this.req.body.subtitle;
             var author = this.req.body.author;
@@ -36,7 +36,8 @@ module.exports = function (options) {
             }
 
             var insertedID = null;
-            //var photoStmt = this.db.prepare("INSERT INTO pages_photos VALUES (?, ?, ?)");
+            // var photoStmt = this.db.prepare("INSERT INTO pages_photos VALUES
+			// (?, ?, ?)");
 
             // Save basic information if type is news or article
             if (addType == "news" || addType == "article") {
@@ -46,10 +47,10 @@ module.exports = function (options) {
                     for (var i = 0; i < uploadedImages.length; i++) {
                         console.log(uploadedImages[i]);
                         db.run("INSERT INTO pages_photos VALUES (?, ?, ?)", null, uploadedImages[i], insertedID);
-                        //photoStmt.run(null, uploadedImages[i], insertedID);
+                        // photoStmt.run(null, uploadedImages[i], insertedID);
                     }
-                    //stmt.finalize();
-                    //photoStmt.finalize();
+                    // stmt.finalize();
+                    // photoStmt.finalize();
                     if (addType == "article") {
                         if (!!specifications) {
                             for (var i = 0; i < specifications.length; i++) {
@@ -60,24 +61,76 @@ module.exports = function (options) {
                     // if type is article, continue insert specification
 
                     // test again if images has been inserted
-                    // db.each("SELECT id,image, page_id FROM pages_photos", function(err, row) {
-                    //     console.log(row.id + ": " + row.image + ": " + row.page_id);
+                    // db.each("SELECT id,image, page_id FROM pages_photos",
+					// function(err, row) {
+                    // console.log(row.id + ": " + row.image + ": " +
+					// row.page_id);
                     // });
 
                 });
             } else if (addType == "image") {
                 for (var i = 0; i < uploadedImages.length; i++) {
                     db.run("INSERT INTO pages VALUES (?, ?, ?, ?, ?, ?, ?, ?)", null, uploadedImages[i], '', '', '', 0, status[addType], edition_id, function() {
-                       // callback here 
+                       // callback here
                     });
                 }
             }
-            
-            // If type is article, 
+
+            // If type is article,
 
             this.db.close();
             res.json(200, this.req.body);
-            //res.end();
+            // res.end();
+
+        };
+
+        PageModel.prototype.put = function () {
+            var title = this.req.body.title;
+            var subtitle = this.req.body.subtitle;
+            var author = this.req.body.author;
+            var text = this.req.body.text;
+            var addType = this.req.body.addType;
+            var edition_id = this.req.body.edition_id;
+            var specifications = this.req.body.specifications;
+            var id = this.req.params.id;
+
+            // get uploaded images
+            var uploadedImages = [];
+            if (typeof this.req.body.uploadedImages != "undefined") {
+                uploadedImages = this.req.body.uploadedImages;
+            }
+
+            // Save basic information if type is news or article
+            console.log(addType);
+            if (addType == "news" || addType == "article") {
+                db.run("UPDATE pages set title = ?, subtitle = ?, author = ?, text = ?, type = ?, edition_id = ? where id = ?", title, subtitle, author, text, status[addType], edition_id, id, function(err) {
+                	console.log(err);
+					console.log(id);
+                    // insert uploaded images
+                    // clean up old images
+                    db.run("delete from pages_photos where page_id = ?", id, function(err) {
+						for (var i = 0; i < uploadedImages.length; i++) {
+	                        db.run("INSERT INTO pages_photos VALUES (?, ?, ?)", null, uploadedImages[i], id);
+	                    }
+                    });
+
+                    if (addType == "article") {
+                        if (!!specifications) {
+                        	db.run("delete from article_specifications where page_id = ?", id, function(err) {
+		                        for (var i = 0; i < specifications.length; i++) {
+	                                db.run("INSERT INTO article_specifications VALUES (?, ?, ?, ?, ?)", null, specifications[i].name, specifications[i].value, specifications[i].category_id, id);
+	                            }
+		                    });
+                        }
+                    }
+                });
+            }
+
+            // If type is article,
+
+            this.db.close();
+            res.json(200, this.req.body);
+            // res.end();
 
         };
 
@@ -95,13 +148,13 @@ module.exports = function (options) {
         PageModel.prototype.getPhotos = function(page, callback) {
             // get images
             db.all("SELECT id,image,page_id FROM pages_photos where page_id = ?", page.id , function(err, photos){
-                //page.photos = photos;
+                // page.photos = photos;
                 callback(page, err, photos);
             });
         }
         PageModel.prototype.getEdition = function(page, callback) {
             db.get("SELECT id,name,edition FROM editions where id = ?", page.edition_id , function(err, edition){
-                //page.photos = photos;
+                // page.photos = photos;
                 callback(page, err, edition);
             });
         }
@@ -132,7 +185,7 @@ module.exports = function (options) {
             var _this = this;
             var pageID = this.req.params.id;
 
-            db.get("SELECT id,title,subtitle,text,status,type,edition_id FROM pages where id = ?", pageID , function(err, page){
+            db.get("SELECT id,title,subtitle,author,text,status,type,edition_id FROM pages where id = ?", pageID , function(err, page){
                 if (!!page) {
                     if (page.type == status['image']) {
                         page.photos = [
@@ -149,7 +202,7 @@ module.exports = function (options) {
                         page.photos = [];
                         _this.getPhotos(page, function(page, err, photos) {
                             _this.getEdition(page, function(page, err, edition) {
-                                
+
                                 if (page.type == status['article']) {
                                     _this.getSpecifications(page, function(page, err, specs) {
                                         page.photos = !!photos ? photos : [];
@@ -173,7 +226,7 @@ module.exports = function (options) {
                                 }
                             });
                         });
-                    }  
+                    }
                 } else {
                     _this.res.json({
                         page : page
@@ -186,7 +239,7 @@ module.exports = function (options) {
             var _this = this;
             var pages = [];
 
-            db.all("SELECT id,title,subtitle,text,status,type,edition_id FROM pages order by id desc", function(err, pages){
+            db.all("SELECT id,title,subtitle,text,author,status,type,edition_id FROM pages order by id desc", function(err, pages){
                 var pageLength = pages.length;
                 var cnt = 0;
 
@@ -209,7 +262,7 @@ module.exports = function (options) {
                         } else {
                             _this.getPhotos(page, function(page, err, photos) {
                                 var editionID = page.edition_id;
-                                
+
                                 _this.getEdition(page, function(page, err, edition) {
                                     page.photos = !!photos ? photos : [];
 
@@ -237,7 +290,7 @@ module.exports = function (options) {
             });
         }
         var page = new PageModel(req, res, db, function (result, redirect) {
-            //console.log('callback');
+            // console.log('callback');
             // callback
         });
 
@@ -252,10 +305,14 @@ module.exports = function (options) {
                 } else if (path == "/detail") {
                     page.detail();
                 }
-                
+
                 break;
             case 'POST':
                 page.post();
+
+                break;
+            case 'PUT':
+                page.put();
 
                 break;
             case 'DELETE':

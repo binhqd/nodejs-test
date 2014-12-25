@@ -90,7 +90,6 @@
         <ul class="sidebar-nav" id="sidebar">
               <li><a href="/editions/#/list">Editions<span class="sub_icon glyphicon glyphicon-link"></span></a></li>
               <li><a href="/pages/#/list">Pages<span class="sub_icon glyphicon glyphicon-link"></span></a></li>
-              <li><a href="/pages/#/specs">Specification Category<span class="sub_icon glyphicon glyphicon-link"></span></a></li>
               <li><a href="/revista/list">Exports<span class="sub_icon glyphicon glyphicon-link"></span></a></li>
             </ul>
       </div>
@@ -99,7 +98,7 @@
       <div id="page-content-wrapper">
         <!-- Keep all page content within the page-content inset div! -->
         <div class="page-content inset">
-          <div class="row">
+          <div class="row" <% if(title == "Pages") { %>ng-controller="PagesCtrl"<% } %>>
               <div class="col-md-12"  ui-view="tabContent"></div>
           </div>
         </div>
