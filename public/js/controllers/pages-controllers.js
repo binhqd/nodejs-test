@@ -7,6 +7,46 @@ BackendCtrls
 })
 .controller('PageFormCtrl', function($scope, $http, $stateParams) {
 
+
+// $scope.selectType = function(type) {
+// $scope.addType = type;
+// switch (type) {
+// case 'news':
+// $scope.typeLabel = "News";
+// break;
+// case 'image':
+// $scope.typeLabel = "Images";
+// break;
+// case 'article':
+// $scope.typeLabel = "Articles";
+// break;
+// }
+// }
+
+    $scope.addImages = function() {
+
+        $('#selectFiles').trigger('click');
+    }
+
+    $scope.delete = function(newsId, index) {
+        var req = {
+            method: 'DELETE',
+            url: '/pages/news/' + newsId,
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        }
+
+        if (confirm("Are you sure to delete this page?")) {
+            $http(req).success(function(res) {
+                $scope.pages.items.splice(index, 1);
+                alert("Page #"+newsId+" has been deleted");
+            }).error(function(){
+                console.log('err');
+            });
+        }
+    }
+
 	$scope.removePhoto = function(image, index) {
 		if (confirm("Are you sure to remove this image?")) {
 			$scope.uploadedImages.items.splice(index, 1);
@@ -24,9 +64,6 @@ BackendCtrls
         postData.addType = $scope.addType;
 
         postData.uploadedImages = [];
-//        $('#inputFiles .uploadedImage').each(function(e) {
-//            postData.uploadedImages[postData.uploadedImages.length] = $(this).val();
-//        });
 
         for (var i = 0; i < $scope.uploadedImages.items.length; i++) {
         	postData.uploadedImages.push($scope.uploadedImages.items[i].name);
@@ -44,8 +81,8 @@ BackendCtrls
         }
 
         /**
-         * Validation
-         */
+		 * Validation
+		 */
 
         if (!$scope.isNew) {
             var req = {
@@ -87,96 +124,7 @@ BackendCtrls
     }
 })
 .controller('PagesCtrl', function ($scope,$http) {
-    $scope.status = {
-        0  : 'image',
-        1: 'article',
-        2: 'news'
-    }
 
-    $scope.uploadedImages = {};
-    $scope.uploadedImages.items = [];
-    $scope.page = {
-        id : null,
-        title : "",
-        subtitle : "",
-        author : "",
-        text : "",
-        status : 0,
-        type : 1,
-        edition_id : null,
-        photos : []
-    };
-    $scope.article = {};
-    $scope.category = {
-        items : []
-    };
-    $scope.editions = {};
-
-    $scope.selectedCategory = {
-        item : {
-            title : "Select Category",
-            id : -1
-        }
-    };
-    $scope.selectedEdition = {
-        item : {
-            name : "Select Edition",
-            id : -1,
-            edition : -1
-        }
-    };
-
-    $scope.addType = "news";
-    $scope.typeLabel = "News";
-
-    $scope.specification = {};
-    $scope.specifications = {};
-    $scope.specifications.items = [];
-
-    $scope.selectEdition = function(item) {
-        $scope.selectedEdition.item = item;
-    }
-
-    $scope.selectType = function(type) {
-        $scope.addType = type;
-        switch (type) {
-            case 'news':
-                $scope.typeLabel = "News";
-                break;
-            case 'image':
-                $scope.typeLabel = "Images";
-                break;
-            case 'article':
-                $scope.typeLabel = "Articles";
-                break;
-        }
-    }
-
-    $scope.addImages = function() {
-
-        $('#selectFiles').trigger('click');
-    }
-
-
-
-    $scope.delete = function(newsId, index) {
-        var req = {
-            method: 'DELETE',
-            url: '/pages/news/' + newsId,
-            headers: {
-                'Content-Type': 'application/json; charset=utf-8'
-            }
-        }
-
-        if (confirm("Are you sure to delete this page?")) {
-            $http(req).success(function(res) {
-                $scope.pages.items.splice(index, 1);
-                alert("Page #"+newsId+" has been deleted");
-            }).error(function(){
-                console.log('err');
-            });
-        }
-    }
 
 })
 .controller('ListPageCtrl', function ($scope,$http,transformRequestAsFormPost, $timeout, $stateParams) {
@@ -199,6 +147,67 @@ BackendCtrls
 .controller('EditPageCtrl', function ($scope,$http,transformRequestAsFormPost, $timeout, $stateParams) {
     var id = $stateParams.id;
     $scope.isNew = false;
+    $scope.selectedEdition = {
+        item : {
+            name : "Select Edition",
+            id : -1,
+            edition : -1
+        }
+    };
+    $scope.status = {
+        0  : 'image',
+        1: 'article',
+        2: 'news'
+    }
+
+    //$scope.uploadedImages = {};
+    //$scope.uploadedImages.items = [];
+    $scope.page = {
+        id : null,
+        title : "",
+        subtitle : "",
+        author : "",
+        text : "",
+        status : 0,
+        type : 1,
+        edition_id : null,
+        photos : []
+    };
+
+    $scope.article = {};
+    $scope.category = {
+        items : []
+    };
+
+    $scope.addType = "news";
+    $scope.typeLabel = "News";
+
+    $scope.specification = {};
+
+
+    $scope.selectEdition = function(item) {
+        $scope.selectedEdition.item = item;
+    }
+    $scope.uploadedImages = [];
+    $scope.specifications = {};
+    $scope.specifications.items = [];
+
+    $scope.selectType = function(type) {
+        $scope.addType = type;
+        switch (type) {
+            case 'news':
+                $scope.typeLabel = "News";
+                break;
+            case 'image':
+                $scope.typeLabel = "Images";
+                break;
+            case 'article':
+                $scope.typeLabel = "Articles";
+                break;
+        }
+    }
+
+    $scope.editions = {};
 
     var req = {
         method: 'GET',
@@ -212,7 +221,7 @@ BackendCtrls
         $scope.page.title = res.page.title;
         $scope.selectType($scope.status[res.page.type]);
 
-// postData.specifications
+        // postData.specifications
         var specs = [];
         for (var i = 0; i < res.page.specifications.length; i++) {
             specs[i] = res.page.specifications[i];
@@ -269,13 +278,58 @@ BackendCtrls
 .controller('AddPageCtrl', function ($scope,$http,transformRequestAsFormPost, $timeout) {
 	$scope.uploadedImages = [];
 	$scope.page = {};
-	$scope.specifications.items = [];
+	// $scope.specifications.items = [];
+	$scope.editions = {};
+	$scope.status = {
+        0  : 'image',
+        1: 'article',
+        2: 'news'
+    }
+
+    //$scope.uploadedImages = {};
+    //$scope.uploadedImages.items = [];
+    $scope.page = {
+        id : null,
+        title : "",
+        subtitle : "",
+        author : "",
+        text : "",
+        status : 0,
+        type : 1,
+        edition_id : null,
+        photos : []
+    };
+
+    $scope.article = {};
+    $scope.category = {
+        items : []
+    };
+
+    $scope.addType = "news";
+    $scope.typeLabel = "News";
+
+    $scope.specification = {};
+
+
+    $scope.selectEdition = function(item) {
+        $scope.selectedEdition.item = item;
+    }
+	$scope.specifications = {};
+    $scope.specifications.items = [];
 
 	$scope.isNew = true;
     var req = {
         method: 'GET',
         url: '/editions/search'
     }
+    $scope.selectedEdition = {
+        item : {
+            name : "Select Edition",
+            id : -1,
+            edition : -1
+        }
+    };
+
     $http(req).success(function(res) {
         if (!!res.data.items && res.data.items.length > 0) {
             $scope.selectedEdition.item = res.data.items[0];
@@ -305,11 +359,6 @@ BackendCtrls
             console.log('err');
         });
 
-    $scope.selectCategory = function(item) {
-        $scope.selectedCategory.item = item;
-    }
-
-
     $scope.delete = function(spec, index) {
 		if (confirm('Are you sure to remove this specification?')) {
 			$scope.specifications.items.splice(index, 1);
@@ -330,6 +379,21 @@ BackendCtrls
         ngDialog.open({
             template: '/templates/pages/partials/add-spec.html',
             controller : function($scope) {
+            	$scope.selectedCategory = {
+        	        item : {
+        	            title : "Select Category",
+        	            id : -1
+        	        }
+        	    };
+            	$scope.selectCategory = function(item) {
+                    $scope.selectedCategory.item = item;
+                }
+
+            	$scope.specification = {name:'',value:''};
+// $scope.selectedCategory = {
+// item : {}
+// };
+// category.items
                 $scope.addSpec = function() {
                     var spec = angular.copy($scope.specification, {});
                     spec.category_id = $scope.selectedCategory.item.id;
