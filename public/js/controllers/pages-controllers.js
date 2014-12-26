@@ -19,7 +19,7 @@ BackendCtrls
 	}
 
 	$scope.savePage = function(isValid) {
-        if (!isValid) {
+        if (!isValid && $scope.page.addType != "image") {
             alert('Invalid input. Please check your form');
             return;
         }
@@ -205,20 +205,16 @@ BackendCtrls
 	$scope.page.addType = "news";
 	$scope.page.typeLabel = "News";
 	// reset
-	$scope.uploadedImages = {
-		items : []
-	};
+	$scope.uploadedImages.items = [];
 
     var req = {
         method: 'GET',
         url: '/editions/search'
     }
-    $scope.selectedEdition = {
-        item : {
-            name : "Select Edition",
-            id : -1,
-            edition : -1
-        }
+    $scope.selectedEdition.item = {
+        name : "Select Edition",
+        id : -1,
+        edition : -1
     };
 
     $http(req).success(function(res) {

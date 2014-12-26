@@ -188,15 +188,17 @@ module.exports = function (options) {
             db.get("SELECT id,title,subtitle,author,text,status,type,edition_id FROM pages where id = ?", pageID , function(err, page){
                 if (!!page) {
                     if (page.type == status['image']) {
-                        page.photos = [
-                            {
-                                id: null,
-                                image: page.title
-                            }
-                        ];
-
-                        _this.res.json({
-                            page : page
+                    	_this.getEdition(page, function(page, err, edition) {
+                    		page.photos = [
+                               {
+                                   id: null,
+                                   image: page.title
+                               }
+                            ];
+                    		page.edition = edition;
+                            _this.res.json({
+                                page : page
+                            });
                         });
                     } else {
                         page.photos = [];
@@ -249,15 +251,27 @@ module.exports = function (options) {
                         var page = pages[i];
                         var pageId = pages[i].id;
                         if (pages[i].type == status['image']) {
-                            pages[i].photos = [
-                                {
-                                    id: null,
-                                    image: pages[i].title
-                                }
-                            ];
 
-                            console.log(pages[i].title + ' is an image');
-                            cnt++;
+
+                            _this.getEdition(page, function(page, err, edition) {
+                            	page.photos = [
+                                   {
+                                       id: null,
+                                       image: page.title
+                                   }
+                                ];
+
+                                page.edition = !!edition ? edition : null;
+
+                                if (cnt == pageLength - 1) {
+                                    _this.res.json({
+                                        data : {
+                                            items : pages
+                                        }
+                                    });
+                                }
+                                cnt++;
+                            });
                             continue;
                         } else {
                             _this.getPhotos(page, function(page, err, photos) {
