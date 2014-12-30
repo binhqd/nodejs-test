@@ -6,20 +6,21 @@
   "scripts": {
     "test": "echo \"Error: no test specified! Configure in package.json\" && exit 1"
   },
-  "dependencies"  : { 
-	  "express" : ">0.0.0",
-      "mongodb"   : ">1.2.14",
-	  "mongoose"  : ">3.6.5",
-	  "socket.io" : ">0.0.0",
-	  "ejs" : ">0.4.3",
-	  "express-partials" :">0.1.0",
-	  "needle":">0.0.0",
-	  "connect-multiparty":">0.0.0",
-	  "mime":">0.0.0",
-	  "node_apns":">0.0.0",
-	  "evil-dns":">0.0.0",
-	  "safe_datejs":">0.0.0"
-	},
+  "dependencies": {
+    "connect-multiparty": ">0.0.0",
+    "ejs": ">0.4.3",
+    "evil-dns": ">0.0.0",
+    "express": ">0.0.0",
+    "express-partials": ">0.1.0",
+    "fs-extra": "^0.13.0",
+    "mime": ">0.0.0",
+    "mongodb": ">1.2.14",
+    "mongoose": ">3.6.5",
+    "needle": ">0.0.0",
+    "node_apns": ">0.0.0",
+    "safe_datejs": ">0.0.0",
+    "socket.io": ">0.0.0"
+  },
   "repository": "",
   "keywords": [
     "Node.js",

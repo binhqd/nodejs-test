@@ -18,7 +18,7 @@
         <div class="row" ng-show="page.current.photos.length > 0">
           <div class="col-xs-6 col-md-3" ng-repeat="image in page.current.photos">
             <a href="javascript:void(0)" class="thumbnail">
-              <img src="/uploads/{{image.image}}" alt="{{image.image}}">
+              <img src="/uploads/{{page.current.edition.slug}}/{{image.image}}" alt="{{image.image}}">
             </a>
           </div>
         </div>

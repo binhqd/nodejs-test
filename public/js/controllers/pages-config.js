@@ -60,5 +60,13 @@ pages.config(function($routeProvider, $stateProvider) {
                 controller : 'ManageSpecCtrl'
             }
         }
+    }).state('test', {
+        url : '/test',
+        views : {
+            'tabContent' : {
+                templateUrl : '/templates/pages/test.html',
+                controller : 'TestCtrl'
+            }
+        }
     })
 });

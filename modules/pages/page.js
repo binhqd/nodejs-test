@@ -1,10 +1,10 @@
 module.exports = function (options) {
-
+    var uploadDir = (__dirname + '/../../public/uploads');
     return function (req, res, next, path) {
         var sqlite3 = require('sqlite3').verbose();
         var db = new sqlite3.Database('db/mydb.db');
         var check;
-
+        
         var status = {
             image : 0,
             article : 1,
@@ -17,7 +17,33 @@ module.exports = function (options) {
             this.callback = callback;
             this.db = db;
         };
-
+        
+        PageModel.prototype.moveFile = function(editionFolder, imageName, s3, fs) {
+            var _this = this;
+            fs.move(uploadDir + '/' + '/' + imageName, uploadDir + '/' + editionFolder + '/' + imageName, function(err) {
+              if (err) return console.error(err)
+              console.log("File success moved!");
+              
+              _this.putToS3(imageName, editionFolder, s3, fs);
+            });
+            
+        }
+        PageModel.prototype.putToS3 = function(imageName, folder, s3, fs) {
+            var _this = this;
+            
+            fs.readFile(uploadDir + '/' + folder + '/' + imageName, function (err, data) {
+              if (err) { throw err; }
+              
+//                  console.log(s3);
+              console.log(imageName);
+              s3.putObject({
+                Key: folder + '/' + imageName,
+                Body: data
+              }, function (err) {
+                if (err) { throw err; }
+              });
+            });
+        }
         PageModel.prototype.post = function () {
             // console.log(this.req.body);
             // res.end();
@@ -28,7 +54,8 @@ module.exports = function (options) {
             var addType = this.req.body.addType;
             var edition_id = this.req.body.edition_id;
             var specifications = this.req.body.specifications;
-
+            var _this = this;
+            
             // get uploaded images
             var uploadedImages = [];
             if (typeof this.req.body.uploadedImages != "undefined") {
@@ -45,7 +72,7 @@ module.exports = function (options) {
                     insertedID = this.lastID;
                     // insert uploaded images
                     for (var i = 0; i < uploadedImages.length; i++) {
-                        console.log(uploadedImages[i]);
+                        // console.log(uploadedImages[i]);
                         db.run("INSERT INTO pages_photos VALUES (?, ?, ?)", null, uploadedImages[i], insertedID);
                         // photoStmt.run(null, uploadedImages[i], insertedID);
                     }
@@ -75,7 +102,43 @@ module.exports = function (options) {
                     });
                 }
             }
-
+            
+            
+            db.get("select * from editions where id = ?", edition_id, function(err, edition) {
+                if (!!edition) {
+                    var slug = require('slug');
+                    // Send to S3
+                    var AWS = require('aws-sdk'), 
+                    fs = require('fs-extra');
+                    
+                    AWS.config.update({ accessKeyId: 'AKIAISZHITNJLFPZ3UTQ', secretAccessKey: '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' });
+                    var s3 = new AWS.S3({params: {Bucket: 'nodejscms'}});
+                    
+                    
+                    // Move image to edition dir
+                    var editionFolder = slug(edition.name + ' ' + edition.edition);
+                    console.log(editionFolder);
+                    
+                    // ensure directory exists
+                    fs.ensureDir(uploadDir + '/' + editionFolder, function(err) {
+                        if (err) return console.error(err)
+                        console.log(editionFolder+ " existed");
+                        
+                        // move
+                        for (var i = 0; i < uploadedImages.length; i++) {
+                            _this.moveFile(editionFolder, uploadedImages[i], s3, fs);
+                        }
+                        
+                    });
+                    
+                    
+                    
+                    
+                }
+            });
+            
+            
+            //console.log(upload.options);
             // If type is article,
 
             this.db.close();
@@ -101,7 +164,7 @@ module.exports = function (options) {
             }
 
             // Save basic information if type is news or article
-            console.log(addType);
+
             if (addType == "news" || addType == "article") {
                 db.run("UPDATE pages set title = ?, subtitle = ?, author = ?, text = ?, type = ?, edition_id = ? where id = ?", title, subtitle, author, text, status[addType], edition_id, id, function(err) {
                 	console.log(err);
@@ -154,8 +217,14 @@ module.exports = function (options) {
         }
         PageModel.prototype.getEdition = function(page, callback) {
             db.get("SELECT id,name,edition FROM editions where id = ?", page.edition_id , function(err, edition){
-                // page.photos = photos;
-                callback(page, err, edition);
+                if (!!edition) {
+                    var slug = require('slug');
+                    edition.slug = slug(edition.name + ' ' + edition.edition);
+                    // page.photos = photos;
+                    callback(page, err, edition);
+                } else {
+                    res.json(200, {code: 403, message: "Invalid edition information"});
+                }
             });
         }
 
