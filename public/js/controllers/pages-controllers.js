@@ -306,7 +306,7 @@ BackendCtrls
             var photo = res.page.photos[i];
 
             $scope.uploadedImages.items[i] = {
-                url : '/uploads/' + photo.image,
+                url : '/uploads/' + res.page.edition.slug + '/' + photo.image,
                 originalName : photo.image,
                 id : res.page.photos[i].id,
                 name : photo.image
@@ -518,4 +518,150 @@ BackendCtrls
         console.log('err');
     });
 })
+.controller('TestCtrl', function ($scope, $http, $stateParams) {
+//	$scope.professorsTransformed = [{
+//		professor : 'Albert Einstein',
+//		className : 'Physics 101',
+//		student : 'Joe',
+//		grade : 'B'
+//	}, {
+//		professor : false,
+//		className : false,
+//		student : 'Mary',
+//		grade : 'A'
+//	}, {
+//		professor : false,
+//		className : 'Physics 201',
+//		student : 'Gunther',
+//		grade : 'C'
+//	}, {
+//		professor : false,
+//		className : false,
+//		student : 'Hans',
+//		grade : 'C'
+//	}, {
+//		professor : 'Charles Darwin',
+//		className : 'Biololgy 101',
+//		student : 'Danielle',
+//		grade : 'A'
+//	}, {
+//		professor : false,
+//		className : false,
+//		student : 'Anne',
+//		grade : 'A'
+//	}, {
+//		professor : false,
+//		className : 'Biology 201',
+//		student : 'Frida',
+//		grade : 'A'
+//	}, {
+//		professor : false,
+//		className : false,
+//		student : 'Fritz',
+//		grade : 'F'
+//	}];
+
+	$scope.professors = [{
+	    'name': 'Albert Einstein',
+	    'classes': [{
+	        'name': 'Physics 101',
+	        'students': [{
+	            'name': 'Joe',
+	            'grade': 'B'
+	        }, {
+	            'name': 'Mary',
+	            'grade': 'A'
+	        }]
+	    }, {
+	        'name': 'Physics 201',
+	        'students': [{
+	            'name': 'Gunther',
+	            'grade': 'C'
+	        }, {
+	            'name': 'Hans',
+	            'grade': 'C'
+	        }
+	        ]
+	    }]
+	}, {
+	    'name': 'Charles Darwin',
+	    'classes': [{
+	        'name': 'Biololgy 101',
+	        'students': [{
+	            'name': 'Danielle',
+	            'grade': 'A'
+	        }, {
+	            'name': 'Anne',
+	            'grade': 'A'
+	        }]
+	    }, {
+	        'name': 'Biology 201',
+	        'students': [{
+	            'name': 'Frida',
+	            'grade': 'A'
+	        }, {
+	            'name': 'Fritz',
+	            'grade': 'F'
+	        }]
+	    }]
+	}, {
+	    'name': 'Charles Darwin',
+	    'classes': [{
+	        'name': 'Biololgy 101',
+	        'students': [{
+	            'name': 'Danielle',
+	            'grade': 'A'
+	        }, {
+	            'name': 'Anne',
+	            'grade': 'A'
+	        }]
+	    }, {
+	        'name': 'Biology 201',
+	        'students': [{
+	            'name': 'Frida',
+	            'grade': 'A'
+	        }, {
+	            'name': 'Fritz',
+	            'grade': 'F'
+	        }]
+	    }, {
+	        'name': 'Biology 201',
+	        'students': [{
+	            'name': 'Frida',
+	            'grade': 'A'
+	        }, {
+	            'name': 'Fritz',
+	            'grade': 'F'
+	        }, {
+	            'name': 'Fritz',
+	            'grade': 'F'
+	        }]
+	    }]
+	}];
+
+	var transform = [];
+	for (var i = 0; i < $scope.professors.length; i++) {
+		var classes = $scope.professors[i].classes;
+		var level = 0;
+		for (var j = 0; j < classes.length; j++) {
+			level = 1;
+			for (var t = 0; t < classes[j].students.length; t++) {
+				level = 2;
+				var item = {
+					professor : t == 0 && j == 0 ? $scope.professors[i].name : false,
+					className : t == 0 ? classes[j].name : false,
+					student : classes[j].students[t].name,
+					grade : classes[j].students[t].grade,
+					rowspanLV1 : t == 0 && j == 0  ? level * classes[j].students.length : 0,
+					rowspanLV2 : t == 0 ? classes[j].students.length : 0
+				};
+
+				transform.push(item);
+			}
+		}
+	}
+
+	$scope.professorsTransformed = transform;
+	console.log($scope.professorsTransformed);
+});
 ;

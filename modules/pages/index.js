@@ -1,4 +1,5 @@
-module.exports = function(){
+module.exports = function(options){
+    console.log(options);
 	var express = require('express');
 	var app = express();
 
