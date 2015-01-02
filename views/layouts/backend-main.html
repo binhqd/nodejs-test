@@ -1,168 +1,178 @@
 <!DOCTYPE html>
 <html lang="pt-br" ng-app="pagesApp">
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title><%= title %></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title><%= title %></title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
 
-    <script>
+<script>
     var DummyAPIUrl = "http://nodecms.localhost.com/json";
     var APIUrl = "http://api.nodecms.localhost.com";
     var SITEPAGE = "http://nodecms.localhost.com";
-  </script>
-  <link rel="stylesheet" href="/assets/css/angular/ngDialog.min.css" />
-  <link rel="stylesheet" href="/assets/css/angular/ngDialog-theme-default.min.css" />
-  
-  <script language='javascript' src='/js/angular/angular.js'></script>
-  <script language='javascript' src='/js/angular/angular-route.js'></script>
-  <script language='javascript' src='/js/angular/ngDialog.min.js'></script>
-  <script language='javascript' src='/js/angular/angular-ui-router.min.js'></script>
-  <script language='javascript' src='/js/angular/ui-bootstrap-tpls-0.12.0.min.js'></script>
-  <script language='javascript' src='/js/angular/lodash.min.js'></script>
-  <script language='javascript' src='/js/controllers/app.js'></script>
+</script>
+<link rel="stylesheet" href="/assets/css/angular/ngDialog.min.css" />
+<link rel="stylesheet" href="/assets/css/angular/ngDialog-theme-default.min.css" />
 
-  <% if(title == "Pages") { %>
-  <script language='javascript' src='/js/controllers/pages-config.js'></script>
-  <script language='javascript' src='/js/controllers/pages-controllers.js'></script>
-  <% } else if (title == "Editions") { %>
-  <script language='javascript' src='/js/controllers/editions-config.js'></script>
-  <script language='javascript' src='/js/controllers/editions-controllers.js'></script>
-  <% } %>
-  <script language='javascript' src='/js/controllers/upload-images-controller.js'></script>
-  <script language='javascript' src='/js/services/transformPostData.js'></script>
-  <script language='javascript' src='/js/directives/pages-directives.js'></script>
-  <!-- BEGIN GLOBAL MANDATORY STYLES -->
+<!-- Le styles -->
+<link href="/assets/css/style.css" rel="stylesheet" />
+<link href="/bootstrap-3.3.1/css/bootstrap.min.css" rel="stylesheet" />
+<link href="/bootstrap-3.3.1/css/bootstrap-theme.min.css" rel="stylesheet" />
+<link href="/bootstrap-3.3.1/css/menu.css" rel="stylesheet" />
 
-    <!-- Le styles -->
-    <link href="/bootstrap-3.3.1/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="/bootstrap-3.3.1/css/bootstrap-theme.min.css" rel="stylesheet"/>
-    <link href="/bootstrap-3.3.1/css/menu.css" rel="stylesheet"/>
-    
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
       <script src="/assets/js/html5shiv.js"></script>
     <![endif]-->
 
-    <!-- Fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/assets/ico/apple-touch-icon-114-precomposed.png">
-      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/assets/ico/apple-touch-icon-72-precomposed.png">
-                    <link rel="apple-touch-icon-precomposed" href="/assets/ico/apple-touch-icon-57-precomposed.png">
-                                   <link rel="shortcut icon" href="/assets/ico/favicon.png">
-  </head>
+<!-- Fav and touch icons -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/assets/ico/apple-touch-icon-144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/assets/ico/apple-touch-icon-114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/assets/ico/apple-touch-icon-72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="/assets/ico/apple-touch-icon-57-precomposed.png">
+<link rel="shortcut icon" href="/assets/ico/favicon.png"/>
 
-  <body>
-<nav class="navbar navbar-inverse  navbar-static-top" role="navigation">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">Backend</a>
-    </div>
+<script language='javascript' src='/js/angular/angular.js'></script>
+<script language='javascript' src='/js/angular/angular-route.js'></script>
+<script language='javascript' src='/js/angular/ngDialog.min.js'></script>
+<script language='javascript' src='/js/angular/angular-ui-router.min.js'></script>
+<script language='javascript' src='/js/angular/ui-bootstrap-tpls-0.12.0.min.js'></script>
+<script language='javascript' src='/js/angular/lodash.min.js'></script>
+<script language='javascript' src='/js/controllers/app.js'></script>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Logout</a></li>
-        
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
+<% if(title == "Pages") { %>
+<script language='javascript' src='/js/controllers/pages-config.js'></script>
+<script language='javascript' src='/js/controllers/pages-controllers.js'></script>
+<% } else if (title == "Editions") { %>
+<script language='javascript' src='/js/controllers/editions-config.js'></script>
+<script language='javascript' src='/js/controllers/editions-controllers.js'></script>
+<% } %>
+<script language='javascript' src='/js/controllers/upload-images-controller.js'></script>
+<script language='javascript' src='/js/services/transformPostData.js'></script>
+<script language='javascript' src='/js/directives/pages-directives.js'></script>
+<!-- BEGIN GLOBAL MANDATORY STYLES -->
+</head>
+
+<body>
+	<nav class="navbar navbar-inverse  navbar-static-top" role="navigation">
+		<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/home"><%= title %></a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="/">Home</a></li>
+					<li><a href="/logout">Logout</a></li>
+
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container-fluid -->
+	</nav>
+
+	<div id="wrapper" class="active">
+
+		<!-- Sidebar -->
+		<!-- Sidebar -->
+		<div id="sidebar-wrapper">
+			<ul id="sidebar_menu" class="sidebar-nav">
+				<li class="sidebar-brand"><a id="menu-toggle" href="#">Menu<span id="main_icon" class="glyphicon glyphicon-align-justify"></span></a></li>
+			</ul>
+			<ul class="sidebar-nav" id="sidebar">
+			    <li class="group-header">REVISTA</li>
+				<li><a href="/editions/#/list">Editions<span class="sub_icon glyphicon glyphicon-link"></span></a></li>
+				<li><a href="/pages/#/list">Pages<span class="sub_icon glyphicon glyphicon-link"></span></a></li>
+				<li><a href="/revista/list">Exports<span class="sub_icon glyphicon glyphicon-link"></span></a></li>
+				<li><a href="/revista/new">Nova Revista</a></li>
+                <li><a href="/revista/list">Listar Revistas</a></li>
+				<li class="group-header">ADMINISTRADORES</li>
+				<li><a href="/admin/form">Novo</a></li>
+				<li><a href="/admin/list">Listar</a></li>
+			</ul>
+		</div>
+
+		<!-- Page content -->
+		<div id="page-content-wrapper">
+			<!-- Keep all page content within the page-content inset div! -->
+			<div class="page-content inset">
+				<div class="row" <% if(title == "Pages") { %>ng-controller="PagesCtrl"<% } %>>
+				    <div class="col-md-12"  ui-view="tabContent"></div>
+                </div>
+                <hr/>
+                <footer>
+			        <p>&copy; <a href="http://www.peared.com.br" target="_blank">Peared Mobile </a> 2013</p>
+			    </footer>
+			</div>
+		</div>
+
+	</div>
     
-    <div id="wrapper" class="active">
-      
-      <!-- Sidebar -->
-            <!-- Sidebar -->
-      <div id="sidebar-wrapper">
-        <ul id="sidebar_menu" class="sidebar-nav">
-             <li class="sidebar-brand"><a id="menu-toggle" href="#">Menu<span id="main_icon" class="glyphicon glyphicon-align-justify"></span></a></li>
-        </ul>
-        <ul class="sidebar-nav" id="sidebar">
-              <li><a href="/editions/#/list">Editions<span class="sub_icon glyphicon glyphicon-link"></span></a></li>
-              <li><a href="/pages/#/list">Pages<span class="sub_icon glyphicon glyphicon-link"></span></a></li>
-              <li><a href="/revista/list">Exports<span class="sub_icon glyphicon glyphicon-link"></span></a></li>
-            </ul>
-      </div>
-          
-      <!-- Page content -->
-      <div id="page-content-wrapper">
-        <!-- Keep all page content within the page-content inset div! -->
-        <div class="page-content inset">
-          <div class="row" <% if(title == "Pages") { %>ng-controller="PagesCtrl"<% } %>>
-              <div class="col-md-12"  ui-view="tabContent"></div>
-          </div>
-        </div>
-      </div>
-      
-    </div>
 
-    
-    <!-- Le javascript
+	<!-- Le javascript
     ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="/assets/js/jquery.js"></script>
-    <script src="/assets/js/bootstrap-transition.js"></script>
-    <script src="/assets/js/bootstrap-alert.js"></script>
-    <script src="/assets/js/bootstrap-modal.js"></script>
-    <script src="/assets/js/bootstrap-dropdown.js"></script>
-    <script src="/assets/js/bootstrap-scrollspy.js"></script>
-    <script src="/assets/js/bootstrap-tab.js"></script>
-    <script src="/assets/js/bootstrap-tooltip.js"></script>
-    <script src="/assets/js/bootstrap-popover.js"></script>
-    <script src="/assets/js/bootstrap-button.js"></script>
-    <script src="/assets/js/bootstrap-collapse.js"></script>
-    <script src="/assets/js/bootstrap-carousel.js"></script>
-    <script src="/assets/js/bootstrap-typeahead.js"></script>
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="/assets/js/jquery.js"></script>
+	<script src="/assets/js/bootstrap-transition.js"></script>
+	<script src="/assets/js/bootstrap-alert.js"></script>
+	<script src="/assets/js/bootstrap-modal.js"></script>
+	<script src="/assets/js/bootstrap-dropdown.js"></script>
+	<script src="/assets/js/bootstrap-scrollspy.js"></script>
+	<script src="/assets/js/bootstrap-tab.js"></script>
+	<script src="/assets/js/bootstrap-tooltip.js"></script>
+	<script src="/assets/js/bootstrap-popover.js"></script>
+	<script src="/assets/js/bootstrap-button.js"></script>
+	<script src="/assets/js/bootstrap-collapse.js"></script>
+	<script src="/assets/js/bootstrap-carousel.js"></script>
+	<script src="/assets/js/bootstrap-typeahead.js"></script>
 
-    <script src="/assets/js/vendor/jquery.ui.widget.js"></script>
+	<script src="/assets/js/vendor/jquery.ui.widget.js"></script>
 
-    <% if(title == "Pages") { %>
-    <!-- The Templates plugin is included to render the upload/download listings -->
-    <script src="/assets/js/tmpl.min.js"></script>
-    <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
-    <script src="/assets/js/load-image.all.min.js"></script>
-    <!-- The Canvas to Blob plugin is included for image resizing functionality -->
-    <script src="/assets/js/canvas-to-blob.min.js"></script>
-    <!-- blueimp Gallery script -->
-    <script src="/assets/js/jquery.blueimp-gallery.min.js"></script>
-    <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
-    <script src="/assets/js/jquery.iframe-transport.js"></script>
-    <!-- The basic File Upload plugin -->
-    <script src="/assets/js/jquery.fileupload.js"></script>
-    <!-- The File Upload processing plugin -->
-    <script src="/assets/js/jquery.fileupload-process.js"></script>
-    <!-- The File Upload image preview & resize plugin -->
-    <script src="/assets/js/jquery.fileupload-image.js"></script>
-    <!-- The File Upload audio preview plugin -->
-    <script src="/assets/js/jquery.fileupload-audio.js"></script>
-    <!-- The File Upload video preview plugin -->
-    <script src="/assets/js/jquery.fileupload-video.js"></script>
-    <!-- The File Upload validation plugin -->
-    <script src="/assets/js/jquery.fileupload-validate.js"></script>
-    <!-- The File Upload user interface plugin -->
-    <script src="/assets/js/jquery.fileupload-ui.js"></script>
+	<% if(title == "Pages") { %>
+	<!-- The Templates plugin is included to render the upload/download listings -->
+	<script src="/assets/js/tmpl.min.js"></script>
+	<!-- The Load Image plugin is included for the preview images and image resizing functionality -->
+	<script src="/assets/js/load-image.all.min.js"></script>
+	<!-- The Canvas to Blob plugin is included for image resizing functionality -->
+	<script src="/assets/js/canvas-to-blob.min.js"></script>
+	<!-- blueimp Gallery script -->
+	<script src="/assets/js/jquery.blueimp-gallery.min.js"></script>
+	<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+	<script src="/assets/js/jquery.iframe-transport.js"></script>
+	<!-- The basic File Upload plugin -->
+	<script src="/assets/js/jquery.fileupload.js"></script>
+	<!-- The File Upload processing plugin -->
+	<script src="/assets/js/jquery.fileupload-process.js"></script>
+	<!-- The File Upload image preview & resize plugin -->
+	<script src="/assets/js/jquery.fileupload-image.js"></script>
+	<!-- The File Upload audio preview plugin -->
+	<script src="/assets/js/jquery.fileupload-audio.js"></script>
+	<!-- The File Upload video preview plugin -->
+	<script src="/assets/js/jquery.fileupload-video.js"></script>
+	<!-- The File Upload validation plugin -->
+	<script src="/assets/js/jquery.fileupload-validate.js"></script>
+	<!-- The File Upload user interface plugin -->
+	<script src="/assets/js/jquery.fileupload-ui.js"></script>
 
-    
-    <% } %>
-    <script type="text/javascript" src="/bower_components/tinymce/tinymce.min.js"></script>
-    <script type="text/javascript" src="/bower_components/angular-ui-tinymce/src/tinymce.js"></script>
-    <script>
-    $(document).ready(function() {
-      $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("active");
-      });
-    });
+
+	<% } %>
+	<script type="text/javascript" src="/bower_components/tinymce/tinymce.min.js"></script>
+	<script type="text/javascript" src="/bower_components/angular-ui-tinymce/src/tinymce.js"></script>
+	<script>
+        $(document).ready(function() {
+            $("#menu-toggle").click(function(e) {
+                e.preventDefault();
+                $("#wrapper").toggleClass("active");
+            });
+        });
     </script>
-  </body>
+</body>
 </html>

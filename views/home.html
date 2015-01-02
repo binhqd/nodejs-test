@@ -1,131 +1,152 @@
 
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title><%= title %></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title><%= title %></title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
 
-    <!-- Le styles -->
-    <link href="/assets/css/bootstrap.css" rel="stylesheet">
-    <style type="text/css">
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-      .sidebar-nav {
-        padding: 9px 0;
-      }
+<!-- Le styles -->
+<!-- <link href="/assets/css/bootstrap.css" rel="stylesheet"> -->
+<style type="text/css">
+.sidebar-nav {
+	padding: 9px 0;
+}
 
-      @media (max-width: 980px) {
-        /* Enable use of floated navbar text */
-        .navbar-text.pull-right {
-          float: none;
-          padding-left: 5px;
-          padding-right: 5px;
-        }
-      }
-    </style>
-    <link href="/assets/css/bootstrap-responsive.css" rel="stylesheet">
+@media ( max-width : 980px) {
+	/* Enable use of floated navbar text */
+	.navbar-text.pull-right {
+		float: none;
+		padding-left: 5px;
+		padding-right: 5px;
+	}
+}
+</style>
+<!-- <link href="/assets/css/bootstrap-responsive.css" rel="stylesheet"> -->
+<link href="/assets/css/style.css" rel="stylesheet" />
+<link href="/bootstrap-3.3.1/css/bootstrap.min.css" rel="stylesheet" />
+<link href="/bootstrap-old/css/bootstrap2.3.2.css" rel="stylesheet" />
+<link href="/bootstrap-3.3.1/css/bootstrap-theme.min.css" rel="stylesheet" />
+<link href="/bootstrap-3.3.1/css/menu.css" rel="stylesheet" />
 
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
       <script src="/assets/js/html5shiv.js"></script>
     <![endif]-->
 
-    <!-- Fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/assets/ico/apple-touch-icon-114-precomposed.png">
-      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/assets/ico/apple-touch-icon-72-precomposed.png">
-                    <link rel="apple-touch-icon-precomposed" href="/assets/ico/apple-touch-icon-57-precomposed.png">
-                                   <link rel="shortcut icon" href="/assets/ico/favicon.png">
-  </head>
+<!-- Fav and touch icons -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/assets/ico/apple-touch-icon-144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/assets/ico/apple-touch-icon-114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/assets/ico/apple-touch-icon-72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="/assets/ico/apple-touch-icon-57-precomposed.png">
+<link rel="shortcut icon" href="/assets/ico/favicon.png">
+</head>
 
-  <body>
+<body>
+	<nav class="navbar navbar-inverse  navbar-static-top" role="navigation">
+		<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/home"><%= title %></a>
+			</div>
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="brand" href="#"><%= title %></a>
-          <div class="nav-collapse collapse">
-            <p class="navbar-text pull-right">
-              
-            </p>
-            <ul class="nav">
-              <li class="active"><a href="/">Home</a></li>
-              <li class="active"><a href="/logout">Logout</a></li>
-             <!-- <li><a href="/help">Ajuda</a></li>
-              <li><a href="/contato">Contato</a></li>-->
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
-    </div>
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
-    <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span3">
-          <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-              <li class="nav-header">Revista</li>
-              <li><a href="/revista/new">Nova Revista</a></li>
-              <li><a href="/revista/list">Listar Revistas</a></li>
-              <li class="nav-header">Administradores</li>
-              <li><a href="/admin/form">Novo</a></li>
-              <li><a href="/admin/list">Listar</a></li>
-            </ul>
-          </div><!--/.well -->
-        </div><!--/span-->
-        <div class="span9">
-        
-          <div class="hero-unit">
-          	<% if (typeof erro !== 'undefined' && erro !== null && erro !=="") { %>
-			  
-			  <blockquote>
-			  <p><i class="icon-exclamation-sign"> </i> <%= erro.message %></p>
-			</blockquote>
-			<% } %>
-          
-          
-          	<%- body %>
-          </div>
-          
-      <hr>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="/">Home</a></li>
+					<li><a href="/logout">Logout</a></li>
 
-      <footer>
-        <p>&copy; <a href="http://www.peared.com.br" target="_blank">Peared Mobile </a> 2013</p>
-      </footer>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container-fluid -->
+	</nav>
 
-    </div><!--/.fluid-container-->
+	<div id="wrapper" class="active">
 
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="/assets/js/jquery.js"></script>
-    <script src="/assets/js/bootstrap-transition.js"></script>
-    <script src="/assets/js/bootstrap-alert.js"></script>
-    <script src="/assets/js/bootstrap-modal.js"></script>
-    <script src="/assets/js/bootstrap-dropdown.js"></script>
-    <script src="/assets/js/bootstrap-scrollspy.js"></script>
-    <script src="/assets/js/bootstrap-tab.js"></script>
-    <script src="/assets/js/bootstrap-tooltip.js"></script>
-    <script src="/assets/js/bootstrap-popover.js"></script>
-    <script src="/assets/js/bootstrap-button.js"></script>
-    <script src="/assets/js/bootstrap-collapse.js"></script>
-    <script src="/assets/js/bootstrap-carousel.js"></script>
-    <script src="/assets/js/bootstrap-typeahead.js"></script>
+		<!-- Sidebar -->
+		<!-- Sidebar -->
+		<div id="sidebar-wrapper">
+			<ul id="sidebar_menu" class="sidebar-nav">
+				<li class="sidebar-brand"><a id="menu-toggle" href="javascript:void(0)">Menu<span id="main_icon" class="glyphicon glyphicon-align-justify"></span></a></li>
+			</ul>
+			<ul class="sidebar-nav" id="sidebar">
+				<li class="group-header">REVISTA</li>
+				<li><a href="/editions/#/list">Editions<span class="sub_icon glyphicon glyphicon-link"></span></a></li>
+				<li><a href="/pages/#/list">Pages<span class="sub_icon glyphicon glyphicon-link"></span></a></li>
+				<li><a href="/revista/list">Exports<span class="sub_icon glyphicon glyphicon-link"></span></a></li>
+
+				<li><a href="/revista/new">Nova Revista</a></li>
+				<li><a href="/revista/list">Listar Revistas</a></li>
+
+				<li class="group-header">ADMINISTRADORES</li>
+				<li><a href="/admin/form">Novo</a></li>
+				<li><a href="/admin/list">Listar</a></li>
+			</ul>
+		</div>
+
+		<!-- Page content -->
+		<div id="page-content-wrapper">
+			<!-- Keep all page content within the page-content inset div! -->
+			<div class="page-content inset">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="hero-unit">
+							<% if (typeof erro !== 'undefined' && erro !== null && erro !=="") { %>
+							<blockquote>
+								<p>
+									<i class="icon-exclamation-sign"> </i> <%= erro.message %>
+								</p>
+							</blockquote>
+							<% } %> <%- body %>
+						</div>
+					</div>
+				</div>
+				<hr />
+				<footer>
+					<p>
+						&copy; <a href="http://www.peared.com.br" target="_blank">Peared Mobile </a> 2013
+					</p>
+				</footer>
+			</div>
+		</div>
+
+	</div>
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="/assets/js/jquery.js"></script>
+	<script src="/assets/js/bootstrap-transition.js"></script>
+	<script src="/assets/js/bootstrap-alert.js"></script>
+	<script src="/assets/js/bootstrap-modal.js"></script>
+	<script src="/assets/js/bootstrap-dropdown.js"></script>
+	<script src="/assets/js/bootstrap-scrollspy.js"></script>
+	<script src="/assets/js/bootstrap-tab.js"></script>
+	<script src="/assets/js/bootstrap-tooltip.js"></script>
+	<script src="/assets/js/bootstrap-popover.js"></script>
+	<script src="/assets/js/bootstrap-button.js"></script>
+	<script src="/assets/js/bootstrap-collapse.js"></script>
+	<script src="/assets/js/bootstrap-carousel.js"></script>
+	<script src="/assets/js/bootstrap-typeahead.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="/js/jquery-1.7.1.min.js"><\/script>')</script>
-        <script type="text/javascript" src="/js/__jquery.tablesorter.js"></script>
-        <script type="text/javascript" src="/js/jquery.tablesorter.pager.js"></script>
-        <link rel="stylesheet" type="text/css" href="/js/images_css/blue/style.css">
- 
-  </body>
+	<script>
+        $(document).ready(function() {
+            $("#menu-toggle").click(function(e) {
+                e.preventDefault();
+                $("#wrapper").toggleClass("active");
+            });
+        });
+        window.jQuery
+                || document
+                        .write('<script src="/js/jquery-1.7.1.min.js"><\/script>')
+    </script>
+	<script type="text/javascript" src="/js/__jquery.tablesorter.js"></script>
+	<script type="text/javascript" src="/js/jquery.tablesorter.pager.js"></script>
+	<link rel="stylesheet" type="text/css" href="/js/images_css/blue/style.css">
+</body>
 </html>

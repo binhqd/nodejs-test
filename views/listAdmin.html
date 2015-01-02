@@ -1,7 +1,7 @@
 <h2>Listagem</h2>
 
 
-<table id="table" class="table table-bordered tablesorter">
+<table id="table" class="table table-bordered tablesorter bootstrap-old">
  <thead>
  	<tr>
  		<th>Usuário</th>
@@ -15,23 +15,23 @@
  		<td><%= qryAdmin[i].usuario %></td>
  		<td>********</td>
  		<td>
- 			<a href="/admin/form/?p1=<%= qryAdmin[i]._id %>" title="Editar"><i class="icon-pencil"></i></a> 
+ 			<a href="/admin/form/?p1=<%= qryAdmin[i]._id %>" title="Editar"><i class="glyphicon glyphicon-pencil"></i></a> 
  			| 
- 			<a href="#" title="<%= qryAdmin[i].usuario %>" id="<%= qryAdmin[i]._id %>" class="trash"><i class="icon-trash"></i></a>
+ 			<a href="#" title="<%= qryAdmin[i].usuario %>" id="<%= qryAdmin[i]._id %>" class="trash"><i class="glyphicon glyphicon-trash"></i></a>
  		</td>
  	</tr>
  	 
     <% } %>
  </tbody>
-<div id="pager" class="pager" style="position:static !important;">
+<div id="pager" class="pager bootstrap-old" style="position:static !important;">
 	<form>
 		<img src="/js/images_css/blue/first.png" class="first"/>
 		<img src="/js/images_css/blue/prev.png" class="prev"/>
-		<input type="text" disabled="true" class="pagedisplay" style="height: 15px;"/>
+		<input type="text" disabled="true" class="pagedisplay"/>
 		<img src="/js/images_css/blue/next.png" class="next"/>
 		<img src="/js/images_css/blue/last.png" class="last"/>
 		<select class="pagesize">
-			<option selected="selected" style="height: 15px;" value="10">10</option>
+			<option selected="selected" value="10">10</option>
 			<option value="20">20</option>
 			<option value="30">30</option>
 			<option  value="40">40</option>

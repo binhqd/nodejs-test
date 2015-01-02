@@ -1,6 +1,7 @@
 module.exports = function (options) {
     var uploadDir = (__dirname + '/../../public/uploads');
     return function (req, res, next, path) {
+        
         var sqlite3 = require('sqlite3').verbose();
         var db = new sqlite3.Database('db/mydb.db');
         var check;
@@ -34,7 +35,7 @@ module.exports = function (options) {
             fs.readFile(uploadDir + '/' + folder + '/' + imageName, function (err, data) {
               if (err) { throw err; }
               
-//                  console.log(s3);
+// console.log(s3);
               console.log(imageName);
               s3.putObject({
                 Key: folder + '/' + imageName,
@@ -138,7 +139,7 @@ module.exports = function (options) {
             });
             
             
-            //console.log(upload.options);
+            // console.log(upload.options);
             // If type is article,
 
             this.db.close();
@@ -391,14 +392,26 @@ module.exports = function (options) {
 
                 break;
             case 'POST':
+                if(!req.session.admin)
+                {
+                    res.redirect("/");
+                }
                 page.post();
 
                 break;
             case 'PUT':
+                if(!req.session.admin)
+                {
+                    res.redirect("/");
+                }
                 page.put();
 
                 break;
             case 'DELETE':
+                if(!req.session.admin)
+                {
+                    res.redirect("/");
+                }
                 page.delete();
                 break;
             default:

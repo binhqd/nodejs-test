@@ -7,6 +7,10 @@ module.exports = function(options){
 	var category = require("./category.js");
 
 	app.get('/', function(req, res){
+	    if(!req.session.admin)
+        {
+            res.redirect("/");
+        }
 		res.render('pages/blank', {
 			pagetype : "page",
 			layout: 'layouts/backend-main',

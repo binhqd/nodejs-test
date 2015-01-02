@@ -1,0 +1,58 @@
+.hero-unit {
+	padding: 60px;
+	margin-bottom: 30px;
+	font-size: 18px;
+	font-weight: 200;
+	line-height: 30px;
+	color: inherit;
+	background-color: #eeeeee;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+}
+
+.bootstrap-old label {
+	display: block;
+	margin-bottom: 5px;
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 20px;
+	cursor: pointer;
+}
+
+.bootstrap-old select, .bootstrap-old textarea, .bootstrap-old input[type="text"],
+	.bootstrap-old input[type="password"], .bootstrap-old input[type="datetime"],
+	.bootstrap-old input[type="datetime-local"], .bootstrap-old input[type="date"],
+	.bootstrap-old input[type="month"], .bootstrap-old input[type="time"],
+	.bootstrap-old input[type="week"], .bootstrap-old input[type="number"],
+	.bootstrap-old input[type="email"], .bootstrap-old input[type="url"],
+	.bootstrap-old input[type="search"], .bootstrap-old input[type="tel"],
+	.bootstrap-old input[type="color"], .bootstrap-old .uneditable-input {
+	display: inline-block;
+	padding: 4px 6px;
+	margin-bottom: 10px;
+	font-size: 14px;
+	line-height: 20px;
+	color: #555555;
+	vertical-align: middle;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border: 1px solid #cccccc;
+	border-radius: 4px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.bootstrap-old .input-xxlarge {
+    width: 530px;
+}
+
+.bootstrap-old input[disabled], .bootstrap-old select[disabled], .bootstrap-old textarea[disabled], .bootstrap-old input[readonly], 
+.bootstrap-old select[readonly], .bootstrap-old textarea[readonly] {
+cursor: not-allowed;
+background-color: #eeeeee;
+}
+
+.bootstrap-old .table>thead>tr>th, .bootstrap-old .table>tbody>tr>th, .bootstrap-old .table>tfoot>tr>th, .bootstrap-old .table>thead>tr>td, 
+.bootstrap-old .table>tbody>tr>td, .bootstrap-old .table>tfoot>tr>td {
+padding: 8px;
+line-height: 24px !important;
+}

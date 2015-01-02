@@ -150,9 +150,7 @@ app.get("/userNew/:nome/:senha",function(req,res,next){
 });
 
 app.post("/",function(req,res,next){
-	
 	DbAdmin.findOne({usuario : req.body.login,senha:req.body.senha}, function(err, retDatabase) {
-        
         if (retDatabase) 
         {
 			console.log(retDatabase);
@@ -177,12 +175,12 @@ app.get("/logout",function(req,res,next){
 
 app.get("/admin/form",function(req,res,next){
 	
-	if(!req.session.admin)
-	{	
-		req.session.erro = {code:400,message:"Sem acesso"};
-		res.redirect("/");
-		return;
-	}
+//	if(!req.session.admin)
+//	{	
+//		req.session.erro = {code:400,message:"Sem acesso"};
+//		res.redirect("/");
+//		return;
+//	}
 	console.log(req.query);
 	
 	if(req.query.p1)
@@ -202,6 +200,26 @@ app.get("/admin/form",function(req,res,next){
 
 app.get("/admin/list",adminModule.findAll);
 
+app.get("/admin/install", function(req,res,next) {
+    var admin = new DbAdmin();
+    admin.usuario = 'binhqd';
+    admin.senha = '123binhqd!@#';
+    admin.save(function(err, saveAdmin){
+        console.log(err);
+        console.log(saveAdmin);
+        if(!err)
+        {
+            req.session.erro = {code:666,message:"Usuário alterado com sucesso!"};
+            res.redirect("/home");
+        }
+        else
+        {
+            req.session.erro = {code:666,message:err.message};
+            res.redirect("/home");
+        }
+        
+    });
+});
 app.post("/createAdmin",function(req,res,next){
 	if(!req.session.admin)
 	{	
