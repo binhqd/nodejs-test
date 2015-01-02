@@ -115,7 +115,7 @@ module.exports = function (options) {
                     var AWS = require('aws-sdk'), 
                     fs = require('fs-extra');
                     
-                    AWS.config.update({ accessKeyId: 'AKIAISZHITNJLFPZ3UTQ', secretAccessKey: '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' });
+                    AWS.config.update({ accessKeyId: '', secretAccessKey: '' });
                     var s3 = new AWS.S3({params: {Bucket: 'nodejscms'}});
                     
                     
