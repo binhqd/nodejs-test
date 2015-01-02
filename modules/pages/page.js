@@ -1,10 +1,11 @@
 module.exports = function (options) {
     var uploadDir = (__dirname + '/../../public/uploads');
     return function (req, res, next, path) {
+        
         var sqlite3 = require('sqlite3').verbose();
         var db = new sqlite3.Database('db/mydb.db');
         var check;
-	var mime = require('mime');
+        var mime = require('mime');
         
         var status = {
             image : 0,
@@ -35,13 +36,13 @@ module.exports = function (options) {
             fs.readFile(uploadDir + '/' + folder + '/' + imageName, function (err, data) {
               if (err) { throw err; }
               var mimeType = mime.lookup(uploadDir + '/' + folder + '/' + imageName);
-//                  console.log(s3);
-	      console.log(mimeType);
+              
+              console.log(imageName);
               s3.putObject({
                 Key: folder + '/' + imageName,
                 Body: data,
-		ACL:'public-read',
-		ContentType: mimeType
+                ACL:'public-read',
+                ContentType: mimeType
               }, function (err) {
                 if (err) { throw err; }
               });
@@ -141,7 +142,7 @@ module.exports = function (options) {
             });
             
             
-            //console.log(upload.options);
+            // console.log(upload.options);
             // If type is article,
 
             this.db.close();
@@ -394,14 +395,26 @@ module.exports = function (options) {
 
                 break;
             case 'POST':
+                if(!req.session.admin)
+                {
+                    res.redirect("/");
+                }
                 page.post();
 
                 break;
             case 'PUT':
+                if(!req.session.admin)
+                {
+                    res.redirect("/");
+                }
                 page.put();
 
                 break;
             case 'DELETE':
+                if(!req.session.admin)
+                {
+                    res.redirect("/");
+                }
                 page.delete();
                 break;
             default:
