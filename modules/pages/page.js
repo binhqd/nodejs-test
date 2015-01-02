@@ -5,6 +5,7 @@ module.exports = function (options) {
         var sqlite3 = require('sqlite3').verbose();
         var db = new sqlite3.Database('db/mydb.db');
         var check;
+        var mime = require('mime');
         
         var status = {
             image : 0,
@@ -34,12 +35,14 @@ module.exports = function (options) {
             
             fs.readFile(uploadDir + '/' + folder + '/' + imageName, function (err, data) {
               if (err) { throw err; }
+              var mimeType = mime.lookup(uploadDir + '/' + folder + '/' + imageName);
               
-// console.log(s3);
               console.log(imageName);
               s3.putObject({
                 Key: folder + '/' + imageName,
-                Body: data
+                Body: data,
+                ACL:'public-read',
+                ContentType: mimeType
               }, function (err) {
                 if (err) { throw err; }
               });
