@@ -200,26 +200,26 @@ app.get("/admin/form",function(req,res,next){
 
 app.get("/admin/list",adminModule.findAll);
 
-app.get("/admin/install", function(req,res,next) {
-    var admin = new DbAdmin();
-    admin.usuario = 'binhqd';
-    admin.senha = '123binhqd!@#';
-    admin.save(function(err, saveAdmin){
-        console.log(err);
-        console.log(saveAdmin);
-        if(!err)
-        {
-            req.session.erro = {code:666,message:"Usuário alterado com sucesso!"};
-            res.redirect("/home");
-        }
-        else
-        {
-            req.session.erro = {code:666,message:err.message};
-            res.redirect("/home");
-        }
-        
-    });
-});
+//app.get("/admin/install", function(req,res,next) {
+//    var admin = new DbAdmin();
+//    admin.usuario = 'binhqd';
+//    admin.senha = '123binhqd!@#';
+//    admin.save(function(err, saveAdmin){
+//        console.log(err);
+//        console.log(saveAdmin);
+//        if(!err)
+//        {
+//            req.session.erro = {code:666,message:"Usuário alterado com sucesso!"};
+//            res.redirect("/home");
+//        }
+//        else
+//        {
+//            req.session.erro = {code:666,message:err.message};
+//            res.redirect("/home");
+//        }
+//        
+//    });
+//});
 app.post("/createAdmin",function(req,res,next){
 	if(!req.session.admin)
 	{	
