@@ -58,7 +58,7 @@
 			var pai = $(this).parent().parent();
 			if(confirm("Tem certeza que deseja remover o usuário "+usr+"?"))
 			{
-				$.post("/removeAdmin",{id:$(this).attr("id")},function(data){
+				$.post("/admin/remove",{id:$(this).attr("id")},function(data){
 					pai.remove();
 				});
 			}

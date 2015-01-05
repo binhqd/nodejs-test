@@ -20,7 +20,7 @@ var revistaModule = require("./model/backend.js");
 var mongoose = require("mongoose");
 
 
-var adminModule = require("./model/administrator.js");
+
 
 var DbAdmin = database.Admin;
 
@@ -63,9 +63,8 @@ app.configure(function(){
 
 app.use('/editions', require('./modules/editions'));
 app.use('/pages', require('./modules/pages'));
-app.use('/setup', require('./modules/setup'));
-
-
+//app.use('/setup', require('./modules/setup'));
+app.use('/admin', require('./modules/admin'));
 
 
 
@@ -131,12 +130,8 @@ app.get("/",function(req,res,next){
 	}
 	else
 	{
-		res.render('index',{layout: 'login',title:"Editora Taboca",erro:req.session.erro,code:""});
-		req.session.destroy();
-		
+		res.redirect('/admin/login');
 	}
-	
-	
 });
 app.get("/userNew/:nome/:senha",function(req,res,next){
 	
@@ -149,129 +144,11 @@ app.get("/userNew/:nome/:senha",function(req,res,next){
 	res.end();
 });
 
-app.post("/",function(req,res,next){
-	DbAdmin.findOne({usuario : req.body.login,senha:req.body.senha}, function(err, retDatabase) {
-        if (retDatabase) 
-        {
-			console.log(retDatabase);
-			
-			req.session.admin = retDatabase;
-			
-			res.redirect("/home");
-        }	
-        else
-        {
-        	req.session.erro = {code:500,message:"Usu&aacute;rio ou senha inv&aacute;lidos"};
-        	res.redirect("/");
-        }
-    });
-});
-
-
 app.get("/logout",function(req,res,next){
 	req.session.destroy();
 	res.redirect("/");
 });
 
-app.get("/admin/form",function(req,res,next){
-	
-//	if(!req.session.admin)
-//	{	
-//		req.session.erro = {code:400,message:"Sem acesso"};
-//		res.redirect("/");
-//		return;
-//	}
-	console.log(req.query);
-	
-	if(req.query.p1)
-	{
-		DbAdmin.findOne({_id:req.query.p1},function(err,ret){
-			res.render('formAdmin',{layout: 'home',param:ret,title:"Editora Taboca",username:req.session.admin.usuario,code:err});
-		});
-	}
-	else
-	{
-		res.render('formAdmin',{layout: 'home',title:"Editora Taboca",username:req.session.admin.usuario,code:err});
-	}
-	
-	
-});
-
-
-app.get("/admin/list",adminModule.findAll);
-
-//app.get("/admin/install", function(req,res,next) {
-//    var admin = new DbAdmin();
-//    admin.usuario = 'binhqd';
-//    admin.senha = '123binhqd!@#';
-//    admin.save(function(err, saveAdmin){
-//        console.log(err);
-//        console.log(saveAdmin);
-//        if(!err)
-//        {
-//            req.session.erro = {code:666,message:"Usuário alterado com sucesso!"};
-//            res.redirect("/home");
-//        }
-//        else
-//        {
-//            req.session.erro = {code:666,message:err.message};
-//            res.redirect("/home");
-//        }
-//        
-//    });
-//});
-app.post("/createAdmin",function(req,res,next){
-	if(!req.session.admin)
-	{	
-		req.session.erro = {code:400,message:"Sem acesso"};
-		res.redirect("/");
-		return;
-	}
-	
-	if(req.body.identificador)
-	{
-		DbAdmin.findOne({_id:req.body.identificador},function(err,ret){
-			ret.usuario = req.body.login;
-			ret.senha = req.body.senha;
-			ret.save(function(err,saveAdmin){
-				console.log(err);
-				console.log(saveAdmin);
-				if(!err)
-				{
-					req.session.erro = {code:666,message:"Usuário alterado com sucesso!"};
-					res.redirect("/home");
-				}
-				else
-				{
-					req.session.erro = {code:666,message:err.message};
-					res.redirect("/home");
-				}
-				
-			});
-		});
-		
-	}
-	else
-	{
-		var admin = new DbAdmin();
-		admin.usuario = req.body.login;
-		admin.senha = req.body.senha;
-		
-		admin.save(function(err,saveAdmin){
-			console.log(err);
-			if(!err)
-			{
-				req.session.erro = {code:666,message:"Usuário incluído com sucesso!"};
-				res.redirect("/home");
-			}
-			else
-			{
-				req.session.erro = {code:666,message:err.message};
-				res.redirect("/home");
-			}
-		});
-	}
-});
 app.get("/home",function(req,res,next){
 	console.log(req.session.admin);
 	
