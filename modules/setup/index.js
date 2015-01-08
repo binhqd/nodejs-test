@@ -64,9 +64,22 @@ module.exports = function(){
       FOREIGN KEY(page_id) REFERENCES pages(id), \
       FOREIGN KEY(category_id) REFERENCES page_categories(id) \
     )");
+    
+//    db.run("DROP table edition_exports");
+    db.run(" \
+      CREATE TABLE if not exists edition_exports ( \
+      id INTEGER PRIMARY KEY AUTOINCREMENT, \
+      edition_id INTEGER, \
+      zip_name varchar(32), \
+      created varchar(64), \
+      FOREIGN KEY(edition_id) REFERENCES editions(id) \
+    )");
+    
+    db.run("ALTER TABLE editions add last_export varchar(64);");
 
     db.each("SELECT id,title FROM pages", function(err, row) {
-        console.log(row.id + ": " + row.title);
+        if (!!row)
+            console.log(row.id + ": " + row.title);
     });
   });
 

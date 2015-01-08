@@ -1,2 +1,4 @@
 @charset "UTF-8";
 footer {padding: 20px 20px 20px 30px;}
+.icon {width:24px;height:24px;display:inline-block;}
+.zip {background:url(../img/zip-icon.png)}

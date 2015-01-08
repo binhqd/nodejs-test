@@ -22,7 +22,7 @@ module.exports = function (options) {
             stmt.finalize();
             this.db.close();
             res.json(200, this.req.body);
-            //res.end();
+            // res.end();
 
         };
 
@@ -53,13 +53,13 @@ module.exports = function (options) {
             // stmt.finalize();
             // this.db.close();
             // res.json(200, this.req.body);
-            //res.end();
+            // res.end();
 
         };
 
         Edition.prototype.search = function () {
             var _this = this;
-            db.all("SELECT id,name,edition FROM editions order by id desc", function(err, rows){
+            db.all("SELECT * FROM editions order by id desc", function(err, rows){
                 _this.res.json({
                     data : {
                         items : rows
@@ -70,7 +70,7 @@ module.exports = function (options) {
 
         Edition.prototype.detail = function () {
             var _this = this;
-            db.get("SELECT id,name,edition FROM editions where id = ?", this.req.params.id , function(err, row){
+            db.get("SELECT * FROM editions where id = ?", this.req.params.id , function(err, row){
                 _this.res.json({
                     editions : row
                 });
@@ -99,7 +99,7 @@ module.exports = function (options) {
         };
 
         var edition = new Edition(req, res, db, function (result, redirect) {
-            //console.log('callback');
+            // console.log('callback');
             // callback
         });
 

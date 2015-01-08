@@ -19,12 +19,7 @@ var revistaModule = require("./model/backend.js");
 
 var mongoose = require("mongoose");
 
-
-
-
 var DbAdmin = database.Admin;
-
-
 
 upload.configure({
         uploadDir: __dirname + '/public/uploads',
@@ -65,16 +60,15 @@ app.use('/editions', require('./modules/editions'));
 app.use('/pages', require('./modules/pages'));
 //app.use('/setup', require('./modules/setup'));
 app.use('/admin', require('./modules/admin'));
-
-
+app.use('/exports', require('./modules/export'));
 
 // This need to be put before express.bodyParser();
 
 app.post('/upload', function (req, res, next) {
 	try {
-	upload.fileHandler()(req, res, function(results) {
-		//console.log(results);
-	});
+    	upload.fileHandler()(req, res, function(results) {
+    		//console.log(results);
+    	});
 	} catch (err) {
 		console.log(err);
 	}

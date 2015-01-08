@@ -32,7 +32,7 @@ BackendCtrls
         console.log(isValid);
     }
 })
-.controller('ListEditionsCtrl', function ($scope,$http) {
+.controller('ListEditionsCtrl', function ($scope,$http, transformRequestAsFormPost) {
     $scope.editions = {};
     var req = {
         method: 'GET',
@@ -58,13 +58,7 @@ BackendCtrls
 
         var req = {
             method: 'DELETE',
-            url: '/editions/' + id,
-            // headers: {
-            // 'Content-Type': 'application/x-www-form-urlencoded;
-            // charset=utf-8'
-            // },
-            // transformRequest: transformRequestAsFormPost,
-            // data: $scope.form
+            url: '/editions/' + id
         }
 
         $http(req).success(function(res) {
@@ -73,14 +67,32 @@ BackendCtrls
             } else {
                 alert(res.message);
             }
-
-
         }).error(function(){
             console.log('err');
         });
     }
 
+    $scope.export = function(id, index) {
+        var req = {
+            method: 'POST',
+            url: '/exports/',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+            },
+            transformRequest: transformRequestAsFormPost,
+            data: {id: id}
+        }
 
+        $http(req).success(function(res) {
+            alert(res.meta.message);
+            if (res.meta.code == 200) {
+                //$state.go('listeditions');
+                $scope.editions.items[index].last_export = res.data.created;
+            }
+        }).error(function(){
+            console.log('err');
+        });
+    }
 })
 .controller('EditionDetailCtrl', function ($scope,$http, $stateParams) {
     $scope.edition = {};

@@ -1,0 +1,29 @@
+<h3>Exports</h3>
+
+<div  class="col-sm-8">
+  <!-- [ <a href='/exports/#/add'>New Export</a> ]  -->
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="col-sm-1">#</th>
+          <th class="col-sm-3">Name</th>
+          <th class="col-sm-1">Edition</th>
+          <th class="col-sm-2">Zip</th>
+          <th class="col-sm-2">Created</th>
+          <th class="col-sm-1">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in exports.items">
+          <td>{{ item.id }}</td>
+
+          <td>{{ item.edition.name }}</td>
+          <td>{{ item.edition.edition }}</td>
+          <td><span class='icon zip'></span> <a href='/exports/{{item.zip_name}}'>{{item.zip_name}}</a></td>
+          <td>{{ item.created }}</td>
+          <td>[ <a href='javascript:void(0)' ng-click="delete(item.id, $index)">Delete</a> ]</td>
+        </tr>
+        
+      </tbody>
+    </table>
+</div>

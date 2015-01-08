@@ -1,13 +1,14 @@
 <h3>Editions</h3>
 
-<div  class="col-sm-8">
+<div  class="col-sm-10">
   [ <a href='/editions/#/add'>Add new Edition</a> ]
     <table class="table table-striped">
       <thead>
         <tr>
-          <th class="col-sm-1">#</th>
-          <th class="col-sm-4">Name</th>
-          <th class="col-sm-2">Edition</th>
+          <th width="3%">#</th>
+          <th class="col-sm-2">Name</th>
+          <th class="col-sm-1">Edition</th>
+          <th class="col-sm-2">Last export</th>
           <th class="col-sm-3">Actions</th>
         </tr>
       </thead>
@@ -19,7 +20,8 @@
               <i>{{ item.subtitle }}</i>
           </td>
           <td>{{ item.edition }}</td>
-          <td>[ <a href='#/detail/{{item.id}}'>View</a> | <a href='#/edit/{{item.id}}'>Edit</a> | <a href='javascript:void(0)' ng-click="delete(item.id, $index)">Delete</a> ]</td>
+          <td>{{ !!item.last_export ? item.last_export : 'Never' }}</td>
+          <td>[ <a href='#/detail/{{item.id}}'>View</a> | <a href='#/edit/{{item.id}}'>Edit</a> | <a href='javascript:void(0)' ng-click="delete(item.id, $index)">Delete</a> | <a href='javascript:void(0)' ng-click="export(item.id, $index)">Export</a> ]</td>
         </tr>
         
       </tbody>
